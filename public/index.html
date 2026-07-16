@@ -16,46 +16,57 @@ footer.note{scroll-margin-top:16px}
 body{
   margin:0; background:var(--ground); color:var(--ink);
   font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",sans-serif;
-  font-size:14px; line-height:1.65; -webkit-text-size-adjust:100%;
+  font-size:15px; line-height:1.7; -webkit-text-size-adjust:100%;
 }
-.wrap{max-width:680px; margin:0 auto; padding:20px 14px 96px}
-.eyebrow{font-size:10.5px; letter-spacing:.16em; color:var(--accent); font-weight:600}
-h1{font-size:22px; font-weight:700; letter-spacing:.02em; margin:4px 0 8px; text-wrap:balance}
-.lede{color:var(--muted); font-size:13px; margin:0}
-.pref-tabs{display:flex; gap:6px; margin:16px -14px 0; padding:0 14px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; border-bottom:1px solid var(--line); scrollbar-width:none}
+.wrap{max-width:680px; margin:0 auto; padding:22px 16px 120px}
+.eyebrow{font-size:11px; letter-spacing:.14em; color:var(--accent); font-weight:700}
+h1{font-size:25px; font-weight:700; letter-spacing:.01em; margin:6px 0 10px; line-height:1.35}
+.lede{color:var(--muted); font-size:13.5px; margin:0; line-height:1.75}
+.pref-tabs{display:flex; gap:6px; margin:18px -16px 0; padding:0 16px 0; overflow-x:auto; -webkit-overflow-scrolling:touch; border-bottom:1px solid var(--line); scrollbar-width:none}
 .pref-tabs::-webkit-scrollbar{display:none}
-.pref-tabs button{flex:none; border:1px solid var(--line); border-bottom:0; background:transparent; color:var(--muted); border-radius:8px 8px 0 0; padding:8px 13px; font:inherit; font-size:12.5px; cursor:pointer; white-space:nowrap}
+.pref-tabs button{flex:none; border:1px solid var(--line); border-bottom:0; background:transparent; color:var(--muted); border-radius:10px 10px 0 0; padding:11px 16px; font:inherit; font-size:13.5px; cursor:pointer; white-space:nowrap}
 .pref-tabs button.on{background:var(--surface); color:var(--ink); font-weight:700; position:relative; top:1px}
-.pref-tabs button .n{font-size:9.5px; color:var(--muted); margin-left:4px}
+.pref-tabs button .n{font-size:10.5px; color:var(--muted); margin-left:4px}
 .layer-tag{display:inline-block; font-size:10px; font-weight:700; letter-spacing:.05em; border-radius:4px; padding:1px 7px; margin-right:6px; vertical-align:1px; color:#fff}
 .layer-tag.kuni{background:var(--c-kuni)} .layer-tag.to{background:var(--c-to)} .layer-tag.shi{background:var(--c-shi)}
-.panel{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px; margin-top:14px}
-.panel h2{font-size:12px; letter-spacing:.1em; color:var(--muted); font-weight:600; margin:0 0 10px}
-.cond{margin-bottom:14px}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px 18px; margin-top:18px}
+.panel h2{font-size:15px; color:var(--ink); font-weight:700; margin:0 0 16px; display:flex; align-items:center; gap:9px}
+.panel h2 .step{flex:none; width:24px; height:24px; border-radius:50%; background:var(--accent); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center}
+.cond{margin-bottom:22px}
 .cond:last-child{margin-bottom:0}
-.cond .lbl{font-size:12px; font-weight:700; margin-bottom:6px}
-.kids{display:flex; flex-wrap:wrap; gap:8px; align-items:center}
-.kid{display:flex; align-items:center; gap:4px; border:1px solid var(--line); border-radius:8px; padding:6px 6px 6px 10px; background:var(--ground)}
-.kid label{font-size:11px; color:var(--muted)}
-.kid select{font:inherit; font-size:13px; border:0; background:transparent; color:var(--ink); font-weight:600}
-.kid button{border:0; background:none; color:var(--muted); cursor:pointer; font-size:14px; padding:2px 5px}
-.addkid{border:1px dashed var(--line); background:transparent; color:var(--accent); border-radius:8px; padding:7px 13px; font:inherit; font-size:12.5px; cursor:pointer; font-weight:600}
+.cond .lbl{font-size:13.5px; font-weight:700; margin-bottom:10px}
+/* --- 入力コントロール共通 --- */
+select, .searchbox{-webkit-appearance:none; appearance:none}
+select.wide, .pickrow select, .sortrow select{
+  font:inherit; font-size:15px; color:var(--ink); font-weight:500;
+  border:1.5px solid var(--line); border-radius:11px; background:var(--surface);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2323648F' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center;
+  padding:0 40px 0 14px; height:52px; width:100%; cursor:pointer;
+}
+select.wide:focus, .pickrow select:focus, .searchbox:focus{border-color:var(--accent); outline:none; box-shadow:0 0 0 3px var(--accent-soft)}
+.kids{display:flex; flex-direction:column; gap:10px}
+.kid{display:flex; align-items:center; gap:10px; border:1.5px solid var(--line); border-radius:11px; padding:0 8px 0 16px; background:var(--surface); height:52px}
+.kid label{font-size:13px; color:var(--muted); font-weight:600; flex:none}
+.kid select{font:inherit; font-size:15px; border:0; color:var(--ink); font-weight:700; flex:1; height:100%; cursor:pointer;
+  -webkit-appearance:none; appearance:none; background:transparent;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2323648F' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 6px center; padding-right:28px}
+.kid button{flex:none; border:0; background:var(--ground); color:var(--muted); cursor:pointer; font-size:15px; width:32px; height:32px; border-radius:8px; line-height:1}
+.addkid{border:1.5px dashed var(--accent); background:var(--accent-soft); color:var(--accent); border-radius:11px; padding:0 16px; height:48px; font:inherit; font-size:14px; cursor:pointer; font-weight:700; width:100%}
 .addkid:disabled{opacity:.4}
-select.wide{font:inherit; font-size:13px; border:1px solid var(--line); border-radius:8px; padding:9px 12px; background:var(--ground); color:var(--ink); width:100%; max-width:340px}
-.togglerow{display:flex; flex-wrap:wrap; gap:6px}
-.togglerow label{display:flex; align-items:center; gap:6px; font-size:12.5px; border:1px solid var(--line); border-radius:999px; padding:6px 13px; cursor:pointer; color:var(--muted); background:var(--surface)}
-.togglerow label:has(input:checked){border-color:var(--accent); color:var(--accent); background:var(--accent-soft); font-weight:600}
-.togglerow input{accent-color:var(--accent); margin:0}
-.hint{font-size:10.5px; color:var(--muted); margin-top:4px}
-.pickrow{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
-.pickrow select{font:inherit; font-size:13px; border:1px solid var(--line); border-radius:8px; padding:9px 10px; background:var(--ground); color:var(--ink); flex:1; min-width:120px; max-width:220px}
-.pickrow button{flex:none; border:1px solid var(--accent); background:var(--accent); color:var(--accent-ink); border-radius:8px; padding:9px 16px; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer}
-.pickrow button:disabled{opacity:.4}
-.picked{display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; align-items:center}
+.togglerow{display:flex; flex-wrap:wrap; gap:8px}
+.togglerow label{display:flex; align-items:center; gap:8px; font-size:14px; border:1.5px solid var(--line); border-radius:12px; padding:12px 16px; cursor:pointer; color:var(--ink); background:var(--surface); flex:1 1 100%; min-height:50px}
+.togglerow label:has(input:checked){border-color:var(--accent); color:var(--accent); background:var(--accent-soft); font-weight:700}
+.togglerow input{accent-color:var(--accent); margin:0; width:20px; height:20px}
+.hint{font-size:12px; color:var(--muted); margin-top:8px; line-height:1.65}
+.pickrow{display:flex; gap:10px; flex-direction:column}
+.pickrow select{flex:1}
+.picked{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center}
 .picked:empty{margin-top:0}
-.picked .pchip{display:flex; align-items:center; gap:6px; border:1px solid var(--accent); color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:5px 8px 5px 13px; font-size:12.5px; font-weight:600}
-.picked .pchip button{border:0; background:none; color:var(--accent); cursor:pointer; font-size:13px; padding:0 3px}
-.picked .gobtn{border:0; background:var(--ok); color:#fff; border-radius:999px; padding:8px 18px; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer}
+.picked .pchip{display:flex; align-items:center; gap:6px; border:1.5px solid var(--accent); color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:8px 10px 8px 15px; font-size:13.5px; font-weight:700}
+.picked .pchip button{border:0; background:none; color:var(--accent); cursor:pointer; font-size:15px; padding:0 3px; line-height:1}
+.picked .gobtn{border:0; background:var(--ok); color:#fff; border-radius:12px; padding:0 20px; height:52px; font:inherit; font-size:15px; font-weight:700; cursor:pointer; width:100%; margin-top:4px}
 .common-grid{display:grid; grid-template-columns:1fr; gap:10px}
 .common-box{border:1px solid var(--line); border-radius:10px; padding:12px 14px}
 .common-box h3{font-size:12.5px; margin:0 0 6px; font-weight:700}
@@ -67,9 +78,9 @@ select.wide{font:inherit; font-size:13px; border:1px solid var(--line); border-r
 .diff-callout .big{font-size:15px; font-weight:700; line-height:1.55}
 .diff-callout .big em{font-style:normal; color:var(--accent)}
 .diff-callout p{margin:5px 0 0; font-size:11.5px; color:var(--muted)}
-.sortrow{display:flex; align-items:center; justify-content:space-between; gap:10px; margin:10px 0 4px}
-.sortrow .count{font-size:11px; color:var(--muted)}
-.sortrow select{font:inherit; font-size:12px; border:1px solid var(--line); border-radius:7px; padding:6px 10px; background:var(--surface); color:var(--ink)}
+.sortrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:20px 0 4px; flex-wrap:wrap}
+.sortrow .count{font-size:12.5px; color:var(--muted); font-weight:600}
+.sortrow select{flex:1 1 200px; min-height:46px; max-width:100%}
 .modes{display:grid; grid-template-columns:1fr; gap:10px; margin-top:18px}
 @media (min-width:760px){.modes{grid-template-columns:1fr 1fr; max-width:760px}}
 .mode-card{display:flex; flex-direction:column; align-items:flex-start; gap:4px; text-align:left; border:1px solid var(--accent); background:var(--surface); border-radius:12px; padding:16px 18px; font:inherit; cursor:pointer}
@@ -111,19 +122,19 @@ details.onb .onb-body li{margin-bottom:4px}
 .onb-credit{font-size:12px; color:var(--muted); margin-top:16px; line-height:1.8}
 .onb-credit a{color:var(--accent); font-weight:600}
 .backrow{display:flex; justify-content:space-between; gap:12px; margin-top:16px}
-.searchbox{font:inherit; font-size:14px; border:1px solid var(--line); border-radius:9px; padding:10px 14px; background:var(--ground); color:var(--ink); width:100%}
-.browselist{margin-top:10px; max-height:420px; overflow-y:auto; border:1px solid var(--line); border-radius:10px}
-.mgroup{position:sticky; top:0; background:var(--ground); font-size:10.5px; font-weight:700; letter-spacing:.08em; color:var(--muted); padding:6px 14px; border-bottom:1px solid var(--line)}
-.mrow{display:flex; align-items:baseline; gap:8px; width:100%; text-align:left; border:0; border-bottom:1px solid var(--line); background:var(--surface); padding:10px 14px; font:inherit; cursor:pointer; flex-wrap:wrap}
+.searchbox{font:inherit; font-size:15px; border:1.5px solid var(--line); border-radius:11px; padding:0 16px; height:52px; background:var(--surface); color:var(--ink); width:100%}
+.browselist{margin-top:12px; max-height:440px; overflow-y:auto; border:1.5px solid var(--line); border-radius:12px; -webkit-overflow-scrolling:touch}
+.mgroup{position:sticky; top:0; background:var(--ground); font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--muted); padding:8px 16px; border-bottom:1px solid var(--line)}
+.mrow{display:flex; align-items:center; gap:10px; width:100%; text-align:left; border:0; border-bottom:1px solid var(--line); background:var(--surface); padding:14px 16px; font:inherit; cursor:pointer; flex-wrap:wrap; min-height:60px}
 .mrow:last-child{border-bottom:0}
-.mrow:hover{background:var(--accent-soft)}
+.mrow:active{background:var(--accent-soft)}
 .mrow.on{background:var(--ok-soft)}
-.mrow b{font-size:13.5px; color:var(--ink)}
-.mrow .msub{font-size:10px; color:var(--muted)}
-.mrow .minfo{font-size:10.5px; color:var(--muted); flex-basis:100%; line-height:1.5}
-.mrow .mact{margin-left:auto; font-size:11.5px; font-weight:700; color:var(--accent); white-space:nowrap}
-.mrow.on .mact{color:var(--ok)}
-.emptyhint{color:var(--muted); font-size:12.5px; margin-top:16px}
+.mrow b{font-size:15px; color:var(--ink)}
+.mrow .msub{font-size:11px; color:var(--muted)}
+.mrow .minfo{font-size:11.5px; color:var(--muted); flex-basis:100%; line-height:1.55; margin-top:2px}
+.mrow .mact{margin-left:auto; font-size:12.5px; font-weight:700; color:var(--accent); white-space:nowrap; border:1.5px solid var(--accent); border-radius:999px; padding:6px 14px; background:var(--surface)}
+.mrow.on .mact{color:#fff; background:var(--ok); border-color:var(--ok)}
+.emptyhint{color:var(--muted); font-size:13px; margin-top:18px; line-height:1.7}
 .resultnote{font-size:11px; color:var(--muted); line-height:1.6; background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:11px 14px; margin-top:8px}
 .resultnote b{color:var(--ink); font-weight:600}
 .resultnote a{color:var(--accent); text-decoration:underline; text-underline-offset:2px; cursor:pointer}
@@ -139,10 +150,10 @@ footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-varia
 .card-head .sub{font-size:10.5px; color:var(--muted)}
 .home-badge{font-size:9.5px; font-weight:700; color:var(--warn); border:1px solid var(--warn); border-radius:999px; padding:0 7px}
 .card-head a.ext{margin-left:auto; color:var(--accent); font-size:11px; text-decoration:none; white-space:nowrap}
-.stages{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:10px 0 4px}
-.st{background:var(--ground); border-radius:8px; padding:7px 4px 6px; text-align:center}
-.st span{display:block; font-size:9.5px; color:var(--muted); letter-spacing:.02em}
-.st b{display:block; font-size:13px; font-variant-numeric:tabular-nums; font-weight:700; margin-top:1px}
+.stages{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:12px 0 4px}
+.st{background:var(--ground); border-radius:10px; padding:9px 2px 8px; text-align:center}
+.st span{display:block; font-size:10px; color:var(--muted); letter-spacing:.01em}
+.st b{display:block; font-size:13.5px; font-variant-numeric:tabular-nums; font-weight:700; margin-top:3px; white-space:nowrap; letter-spacing:-.03em}
 .st.total{background:var(--ok-soft)}
 .st.total b{color:var(--ok)}
 .own-note{font-size:10.5px; color:var(--muted); margin-bottom:8px}
@@ -173,10 +184,11 @@ label.cmp input{accent-color:var(--accent)}
 .stagecalc .ln{display:flex; justify-content:space-between; gap:10px; color:var(--muted)}
 .stagecalc .ln .a{font-variant-numeric:tabular-nums; white-space:nowrap}
 .detail .official{display:inline-block; margin-top:10px; border:1px solid var(--accent); color:var(--accent); border-radius:8px; padding:8px 16px; font-size:12px; font-weight:600; text-decoration:none}
-.cmpbar{position:fixed; left:50%; transform:translateX(-50%); bottom:14px; z-index:30; background:var(--ink); color:var(--ground); border-radius:999px; padding:9px 16px; display:none; align-items:center; gap:10px; font-size:12px; box-shadow:0 6px 24px rgba(10,25,40,.25); max-width:94vw}
+.cmpbar{position:fixed; left:12px; right:12px; bottom:14px; z-index:30; background:var(--ink); color:var(--ground); border-radius:14px; padding:11px 14px; display:none; align-items:center; gap:10px; font-size:13px; box-shadow:0 8px 28px rgba(10,25,40,.3)}
 .cmpbar.show{display:flex}
-.cmpbar #cmpLabel{overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-.cmpbar button{flex:none; border:0; border-radius:999px; padding:6px 13px; font:inherit; font-size:11.5px; font-weight:700; cursor:pointer; background:var(--accent); color:var(--accent-ink)}
+.cmpbar #cmpLabel{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1}
+.cmpbar button{flex:none; border:0; border-radius:10px; padding:10px 16px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; background:var(--accent); color:var(--accent-ink)}
+@media (min-width:520px){.cmpbar{left:50%; right:auto; transform:translateX(-50%); max-width:520px; min-width:340px}}
 .overlay{position:fixed; inset:0; background:rgba(10,20,30,.55); z-index:40; display:none; padding:10px}
 .overlay.show{display:flex}
 .modal{background:var(--surface); color:var(--ink); border-radius:12px; margin:auto; max-width:1000px; width:100%; max-height:92vh; display:flex; flex-direction:column}
@@ -202,23 +214,25 @@ footer.note{margin-top:28px; font-size:10.5px; color:var(--muted); border-top:1p
 footer.note p{margin:0 0 6px}
 button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
 @media (min-width:760px){
-  .wrap{max-width:1000px; padding:32px 24px 96px}
-  h1{font-size:28px}
-  .lede{font-size:14px}
-  .pref-tabs{margin:20px 0 0; padding:0; overflow:visible}
-  .common-grid{grid-template-columns:1fr 1fr; gap:14px}
-  .panel{padding:20px 22px}
-  .card{padding:16px 20px}
-  .stages{max-width:520px}
-  .cond-wrap{display:flex; flex-wrap:wrap; gap:28px}
-  .cond-wrap .cond{margin-bottom:0; min-width:260px}
+  .wrap{max-width:1000px; padding:36px 24px 120px}
+  h1{font-size:30px}
+  .lede{font-size:15px}
+  .pref-tabs{margin:22px 0 0; padding:0; overflow:visible}
+  .common-grid{grid-template-columns:1fr 1fr; gap:16px}
+  .panel{padding:26px 26px}
+  .card{padding:20px 22px}
+  .stages{max-width:560px}
+  .cond-wrap{display:flex; flex-wrap:wrap; gap:28px 32px}
+  .cond-wrap .cond{margin-bottom:0; min-width:300px; flex:1}
+  select.wide, .pickrow select, .searchbox{max-width:420px}
+  .addkid, .picked .gobtn{max-width:280px}
 }
 </style>
 
 <div class="wrap">
 <header class="site">
   <div class="eyebrow">1都3県203市区町村を、まるごと比較</div>
-  <h1>引っ越し先の子育て支援くらべ</h1>
+  <h1><span style="display:inline-block">引っ越し先の</span><span style="display:inline-block">子育て支援くらべ</span></h1>
   <p class="lede">住む自治体で、受けられる子育て支援は大きく変わります。ご家族の条件を入れるだけで、妊娠〜出生・未就学・小中高のステージ別に「これから受けられる支援」と自治体ごとの制度の違いがわかります。</p>
   <p style="margin:8px 0 0"><button class="linkbtn" id="onbOpenBtn" style="font-size:12.5px">💡 はじめての方へ（ごあいさつ・活用方法）</button></p>
   <div class="pref-tabs" role="tablist" id="prefTabs"></div>
@@ -238,7 +252,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 
 
 <section class="panel" aria-label="条件入力">
-  <h2>ご家族の条件</h2>
+  <h2><span class="step">1</span>ご家族の条件を入れる</h2>
   <div class="cond-wrap">
     <div class="cond">
       <div class="lbl">お子さまの構成（年上から順に）</div>
@@ -252,7 +266,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
         <option value="yochien">幼稚園を利用予定</option>
         <option value="none">未定・自宅保育</option>
       </select>
-      <div class="hint">認可: 0〜2歳保育料の無償化ルール（東京都は第1子から・所得制限なし等）を平均3万円/月で換算して反映／認可外: 補助上限×利用月数を反映（東京のみ収録）</div>
+      <div class="hint">0〜2歳の保育料無償化などを金額に反映します（詳しい前提は結果の注記に記載）。</div>
     </div>
     <div class="cond">
       <div class="lbl">世帯の状況（あてはまるもの）</div>
@@ -261,7 +275,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
         <label><input type="checkbox" id="optTwins">多胎（双子など）</label>
         <label><input type="checkbox" id="optCare">障害・医療的ケアあり</label>
       </div>
-      <div class="hint">児童扶養手当の表示や、シッター補助の対象時間・年齢の目安に反映します</div>
+      <div class="hint">手当や補助の対象・目安に反映します。</div>
     </div>
     <div class="cond">
       <div class="lbl">現住地（任意）</div>
@@ -282,8 +296,9 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 <div class="diff-callout" id="diffCallout"></div>
 
 <section class="panel" aria-label="自治体をえらんで比較">
-  <h2>🔍 自治体をえらんで比較（タップで追加・最大3つ・県をまたいでOK）</h2>
-  <input type="search" id="muniSearch" class="searchbox" placeholder="自治体名で検索（例: 世田谷、流山、大宮）">
+  <h2><span class="step">2</span>くらべる自治体をえらぶ</h2>
+  <div class="hint" style="margin:-8px 0 12px">検索するか一覧からタップで追加（最大3つ・県をまたいでOK）。</div>
+  <input type="search" id="muniSearch" class="searchbox" placeholder="🔍 自治体名で検索（例: 世田谷、流山、大宮）">
   <div id="browseList" class="browselist"></div>
   <div class="picked" id="cmpPicked"></div>
 </section>
