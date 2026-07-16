@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kosodate-kurabe",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "./public"
+  },
+  "workers_dev": false,
+  "routes": [
+    { "pattern": "kosodate.pint-home.com", "custom_domain": true }
+  ]
+}
