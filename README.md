@@ -19,3 +19,8 @@ npx wrangler dev
 
 `public/index.html` のインラインスクリプトを変更したら、CSPのハッシュ更新が必要
 （`npm test` が期待値を表示するので `public/_headers` に反映する）。
+
+## 運用メモ（重要）
+
+- `public/_headers` の CSP に `script-src` を**入れないこと**。Cloudflare の Web Analytics（自動計測）が HTML にビーコンを注入する際、`script-src` を自社ハッシュに書き換えるため、`'unsafe-inline'` が無効化されてアプリ本体のインラインスクリプトがブロックされる（2026-07 に本番全損の実績あり）。
+- 厳格な `script-src` を使いたい場合は、先に Cloudflare ダッシュボードで該当サイトの Web Analytics（RUM 自動セットアップ）を無効化すること。
