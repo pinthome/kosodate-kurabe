@@ -248,13 +248,24 @@ label.cmp input{accent-color:var(--accent)}
 .modal-head h2{font-size:14px; margin:0; font-weight:700}
 .modal-head button{margin-left:auto; border:1px solid var(--line); background:none; color:var(--muted); border-radius:7px; padding:4px 12px; font:inherit; font-size:12px; cursor:pointer}
 .modal-body{overflow:auto; padding:0 16px 16px}
-table.cmp{border-collapse:collapse; width:100%; margin-top:12px; font-size:12px}
-table.cmp th, table.cmp td{border-top:1px solid var(--line); padding:9px 10px; vertical-align:top; text-align:left; white-space:pre-line; min-width:160px}
-table.cmp th:first-child, table.cmp td:first-child{min-width:96px; font-size:10.5px; letter-spacing:.04em; color:var(--muted); font-weight:600}
-table.cmp thead th{border-top:0; font-size:13px; font-weight:700; color:var(--ink); position:sticky; top:0; background:var(--surface); z-index:3}
-table.cmp th:first-child, table.cmp td:first-child{position:sticky; left:0; background:var(--surface); z-index:2}
+table.cmp{border-collapse:separate; border-spacing:0; width:100%; margin-top:10px; font-size:12.5px}
+table.cmp th, table.cmp td{border-bottom:1px solid var(--line); padding:12px 12px; vertical-align:top; text-align:left; white-space:pre-line; min-width:138px; line-height:1.65}
+table.cmp td + td, table.cmp th + th{border-left:1px solid var(--line)}
+table.cmp th:first-child, table.cmp td:first-child{min-width:78px; max-width:96px; font-size:10.5px; letter-spacing:.02em; color:var(--muted); font-weight:700; line-height:1.5}
+table.cmp thead th{border-top:0; font-size:14.5px; font-weight:700; color:var(--ink); position:sticky; top:0; background:var(--surface); z-index:3; box-shadow:0 2px 0 var(--line)}
+table.cmp thead th .pn{display:block; font-size:10px; color:var(--muted); font-weight:400; margin-top:1px}
+table.cmp th:first-child, table.cmp td:first-child{position:sticky; left:0; background:var(--surface); z-index:2; box-shadow:2px 0 0 var(--line)}
 table.cmp thead th:first-child{z-index:4}
 table.cmp tr.section td{position:sticky; left:0}
+table.cmp td .yen{display:block; font-size:16px; letter-spacing:-.02em}
+table.cmp td .sub2{display:block; font-size:10.5px; color:var(--muted); margin-top:2px}
+table.cmp td .leadpill{margin:4px 0 0; display:inline-block}
+table.cmp tr.rtotal td{background:#FFF9F6}
+table.cmp tr.rtotal td:first-child{background:var(--surface)}
+table.cmp tr.rtotal .yen{font-size:18px; color:var(--joy-deep)}
+table.cmp td.longtext{font-size:11.5px; line-height:1.7}
+.cmphint{font-size:11px; color:var(--muted); margin:10px 2px 0; display:flex; align-items:center; gap:6px}
+@media (min-width:760px){.cmphint{display:none}}
 details.panel > summary{cursor:pointer; list-style:none; font-size:12px; letter-spacing:.1em; color:var(--muted); font-weight:600; display:flex; justify-content:space-between; align-items:center; gap:10px}
 details.panel > summary::-webkit-details-marker{display:none}
 details.panel > summary::after{content:'＋'; color:var(--accent); font-size:14px}
@@ -878,13 +889,13 @@ function openCompare(){
   const ds = state.compare.map(n => findMuni(n)).filter(Boolean);
   const anyTokyo = ds.some(d => d.pref === '東京都');
   const ss = ds.map(d => calcStages(d, state.kids));
-  const row = (label, fn) => `<tr><td>${label}</td>${ds.map((d, i) => `<td>${fn(d, ss[i])}</td>`).join('')}</tr>`;
+  const row = (label, fn, cls) => `<tr><td>${label}</td>${ds.map((d, i) => `<td class="${cls || ''}">${fn(d, ss[i])}</td>`).join('')}</tr>`;
   const section = label => `<tr class="section"><td colspan="${ds.length + 1}">${label}</td></tr>`;
   // 金額行: 最大値のセルに「リード」マーカー（同額なら付けない）
-  const moneyRow = (label, vals, extra) => {
+  const moneyRow = (label, vals, extra, rowClass) => {
     const max = Math.max(...vals);
     const uniq = max > 0 && vals.filter(v => v === max).length < vals.length;
-    return `<tr><td>${label}</td>${vals.map((v, i) => `<td class="${uniq && v === max ? 'lead' : ''}"><span class="yen">${manS(v)}</span>${uniq && v === max ? '<span class="leadpill">リード</span>' : ''}${extra ? extra(i) : ''}</td>`).join('')}</tr>`;
+    return `<tr class="${rowClass || ''}"><td>${label}</td>${vals.map((v, i) => `<td class="${uniq && v === max ? 'lead' : ''}"><span class="yen">${manS(v)}</span>${extra ? `<span class="sub2">${extra(i)}</span>` : ''}${uniq && v === max ? '<span class="leadpill">リード</span>' : ''}</td>`).join('')}</tr>`;
   };
   // 少ないほど良い行: 最小値のセルにマーカー
   const minRow = (label, nums, texts) => {
@@ -894,25 +905,26 @@ function openCompare(){
     return `<tr><td>${label}</td>${nums.map((n, i) => `<td class="${uniq && n === min ? 'lead' : ''}">${texts[i]}${uniq && n === min ? '<span class="leadpill">リード</span>' : ''}</td>`).join('')}</tr>`;
   };
   const tokyoRows = anyTokyo ? `
-    ${row('認証保育所などの補助', d => d.pref === '東京都' ? esc(d.ninsho || '—') : '—（都内のみ収録）')}
-    ${row('私立幼稚園の保護者補助', d => d.pref === '東京都' ? esc(d.yochien || '—') : '—（都内のみ収録）')}
-    ${row('ベビーシッター利用支援（都事業）', d => d.pref === '東京都' ? esc(d.bs || '未実施') : '—（都事業）')}` : '';
+    ${row('認証保育所などの補助', d => d.pref === '東京都' ? esc(d.ninsho || '—') : '—（都内のみ収録）', 'longtext')}
+    ${row('私立幼稚園の保護者補助', d => d.pref === '東京都' ? esc(d.yochien || '—') : '—（都内のみ収録）', 'longtext')}
+    ${row('ベビーシッター利用支援（都事業）', d => d.pref === '東京都' ? esc(d.bs || '未実施') : '—（都事業）', 'longtext')}` : '';
   document.getElementById('cmpBody').innerHTML = `
+    <div class="cmphint">👉 表は横にスクロールできます（項目名は固定のまま）</div>
     <table class="cmp">
-      <thead><tr><th></th>${ds.map(d => `<th>${esc(d.name)}<div style="font-size:10px;color:var(--muted);font-weight:400">${esc(d.pref)}</div></th>`).join('')}</tr></thead>
+      <thead><tr><th></th>${ds.map(d => `<th>${esc(d.name)}<span class="pn">${esc(d.pref)}</span></th>`).join('')}</tr></thead>
       <tbody>
         ${section('ステージ別の受給見込み（この条件・概算）')}
         ${moneyRow('妊娠〜出生', ss.map(s => s.birth))}
         ${moneyRow('未就学（0〜5歳）', ss.map(s => s.pre))}
         ${moneyRow('小中高（6〜18歳）', ss.map(s => s.school))}
-        ${moneyRow('合計', ss.map(s => s.total), i => `（うち自治体独自 ${man(ss[i].muni)}）`)}
+        ${moneyRow('合計', ss.map(s => s.total), i => `うち自治体独自 ${man(ss[i].muni)}`, 'rtotal')}
         ${section('制度の違い')}
-        ${row('都県の制度', d => `【${esc(d.pref)}】` + esc(PREFS[d.pref].prefItems.map(i => i[0]).join('／')))}
+        ${row('都県の制度', d => `【${esc(d.pref)}】` + esc(PREFS[d.pref].prefItems.map(i => i[0]).join('／')), 'longtext')}
         ${row('そのほかの制度', d => d.tags.length ? d.tags.map(t => TAG_LABELS[t]).join('・') : '—')}
-        ${row('子ども医療費助成', d => esc(d.iryo))}
-        ${row('学校給食費', d => esc(d.kyushoku))}
-        ${row('独自給付（制度一覧）', d => esc(benefitsText(d)))}
-        ${row('そのほか注目の支援', d => esc(d.sonota || '—'))}
+        ${row('子ども医療費助成', d => esc(d.iryo), 'longtext')}
+        ${row('学校給食費', d => esc(d.kyushoku), 'longtext')}
+        ${row('独自給付（制度一覧）', d => esc(benefitsText(d)), 'longtext')}
+        ${row('そのほか注目の支援', d => esc(d.sonota || '—'), 'longtext')}
         ${tokyoRows}
         ${section('保育・預け先')}
         ${minRow('保育所待機児童', ds.map(d => d.hoiku), ds.map(d => taikiText(d.hoiku)))}
