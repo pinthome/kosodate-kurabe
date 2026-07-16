@@ -4,19 +4,37 @@
 <style>
 :root{
   color-scheme:light;
-  --ground:#F5F7F9; --surface:#FFFFFF; --ink:#16283A; --muted:#5D6E7E;
+  --ground:#F4F7FA; --surface:#FFFFFF; --ink:#16283A; --muted:#5D6E7E;
   --line:#DCE3E9; --accent:#23648F; --accent-ink:#FFFFFF; --accent-soft:#E8F0F6;
   --ok:#2E7D5B; --ok-soft:#E6F2EC; --warn:#B07A1E; --bar:#D3DEE7; --home:#FFF7E6;
   --c-kuni:#7E90A3; --c-to:#23648F; --c-shi:#2E7D5B;
+  --grad-accent:linear-gradient(135deg,#2E86C1 0%,#1F6E8C 100%);
+  --grad-total:linear-gradient(135deg,#39A17C 0%,#2C7A57 100%);
+  --sh-sm:0 1px 2px rgba(22,40,58,.04), 0 4px 14px rgba(22,40,58,.05);
+  --sh-md:0 4px 14px rgba(22,40,58,.06), 0 14px 34px rgba(22,40,58,.07);
+  --sh-accent:0 6px 18px rgba(35,100,143,.28);
+  --sh-total:0 6px 18px rgba(46,125,91,.28);
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
 footer.note{scroll-margin-top:16px}
 body{
-  margin:0; background:var(--ground); color:var(--ink);
+  margin:0; color:var(--ink);
+  background:
+    radial-gradient(1100px 460px at 88% -120px, rgba(46,134,193,.14), transparent 70%),
+    radial-gradient(900px 420px at -10% 40px, rgba(46,161,124,.10), transparent 70%),
+    var(--ground);
+  background-attachment:fixed;
   font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",sans-serif;
   font-size:15px; line-height:1.7; -webkit-text-size-adjust:100%;
+}
+@keyframes cardIn{from{opacity:0; transform:translateY(14px) scale(.99)} to{opacity:1; transform:none}}
+@keyframes pop{0%{transform:scale(1)} 40%{transform:scale(1.12)} 100%{transform:scale(1)}}
+@media (prefers-reduced-motion: no-preference){
+  .reveal{animation:cardIn .5s cubic-bezier(.22,.7,.3,1) both}
+  .pref-tabs button, .mode-card, .mrow, .togglerow label, select.wide, .searchbox, .addkid, .picked .gobtn, .st{transition:box-shadow .18s ease, border-color .18s ease, background .18s ease, transform .12s ease}
+  .picked .gobtn:active, .cmpbar button:active, .mrow .mact:active{transform:scale(.97)}
 }
 .wrap{max-width:680px; margin:0 auto; padding:22px 16px 120px}
 .eyebrow{font-size:11px; letter-spacing:.14em; color:var(--accent); font-weight:700}
@@ -29,9 +47,9 @@ h1{font-size:25px; font-weight:700; letter-spacing:.01em; margin:6px 0 10px; lin
 .pref-tabs button .n{font-size:10.5px; color:var(--muted); margin-left:4px}
 .layer-tag{display:inline-block; font-size:10px; font-weight:700; letter-spacing:.05em; border-radius:4px; padding:1px 7px; margin-right:6px; vertical-align:1px; color:#fff}
 .layer-tag.kuni{background:var(--c-kuni)} .layer-tag.to{background:var(--c-to)} .layer-tag.shi{background:var(--c-shi)}
-.panel{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px 18px; margin-top:18px}
-.panel h2{font-size:15px; color:var(--ink); font-weight:700; margin:0 0 16px; display:flex; align-items:center; gap:9px}
-.panel h2 .step{flex:none; width:24px; height:24px; border-radius:50%; background:var(--accent); color:#fff; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center}
+.panel{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px 18px; margin-top:18px; box-shadow:var(--sh-sm)}
+.panel h2{font-size:15.5px; color:var(--ink); font-weight:700; margin:0 0 16px; display:flex; align-items:center; gap:10px}
+.panel h2 .step{flex:none; width:26px; height:26px; border-radius:50%; background:var(--grad-accent); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; box-shadow:var(--sh-accent)}
 .cond{margin-bottom:22px}
 .cond:last-child{margin-bottom:0}
 .cond .lbl{font-size:13.5px; font-weight:700; margin-bottom:10px}
@@ -66,7 +84,8 @@ select.wide:focus, .pickrow select:focus, .searchbox:focus{border-color:var(--ac
 .picked:empty{margin-top:0}
 .picked .pchip{display:flex; align-items:center; gap:6px; border:1.5px solid var(--accent); color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:8px 10px 8px 15px; font-size:13.5px; font-weight:700}
 .picked .pchip button{border:0; background:none; color:var(--accent); cursor:pointer; font-size:15px; padding:0 3px; line-height:1}
-.picked .gobtn{border:0; background:var(--ok); color:#fff; border-radius:12px; padding:0 20px; height:52px; font:inherit; font-size:15px; font-weight:700; cursor:pointer; width:100%; margin-top:4px}
+.picked .gobtn{border:0; background:var(--grad-total); color:#fff; border-radius:12px; padding:0 20px; height:54px; font:inherit; font-size:15.5px; font-weight:700; cursor:pointer; width:100%; margin-top:6px; box-shadow:var(--sh-total)}
+.picked .gobtn:hover{filter:brightness(1.05)}
 .common-grid{display:grid; grid-template-columns:1fr; gap:10px}
 .common-box{border:1px solid var(--line); border-radius:10px; padding:12px 14px}
 .common-box h3{font-size:12.5px; margin:0 0 6px; font-weight:700}
@@ -143,19 +162,22 @@ footer.note h3{font-size:11px; letter-spacing:.08em; color:var(--ink); margin:0 
 footer.note .fn{margin:0 0 7px; display:flex; gap:7px}
 footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums}
 .calcnote-mini{font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.5}
-.card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px; margin-top:10px}
-.card.home{background:var(--home)}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:16px; margin-top:12px; box-shadow:var(--sh-md)}
+@media (prefers-reduced-motion: no-preference){.card{transition:transform .18s ease, box-shadow .18s ease}}
+.card:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(22,40,58,.09), 0 20px 44px rgba(22,40,58,.09)}
+.card.home{background:linear-gradient(180deg,#FFFBF0,#FFFFFF)}
 .card-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
 .jichitai{font-size:16px; font-weight:700}
 .card-head .sub{font-size:10.5px; color:var(--muted)}
 .home-badge{font-size:9.5px; font-weight:700; color:var(--warn); border:1px solid var(--warn); border-radius:999px; padding:0 7px}
 .card-head a.ext{margin-left:auto; color:var(--accent); font-size:11px; text-decoration:none; white-space:nowrap}
 .stages{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:12px 0 4px}
-.st{background:var(--ground); border-radius:10px; padding:9px 2px 8px; text-align:center}
+.st{background:var(--ground); border-radius:12px; padding:10px 2px 9px; text-align:center}
 .st span{display:block; font-size:10px; color:var(--muted); letter-spacing:.01em}
 .st b{display:block; font-size:13.5px; font-variant-numeric:tabular-nums; font-weight:700; margin-top:3px; white-space:nowrap; letter-spacing:-.03em}
-.st.total{background:var(--ok-soft)}
-.st.total b{color:var(--ok)}
+.st.total{background:var(--grad-total); box-shadow:var(--sh-total)}
+.st.total span{color:rgba(255,255,255,.85)}
+.st.total b{color:#fff; font-size:14.5px}
 .own-note{font-size:10.5px; color:var(--muted); margin-bottom:8px}
 .own-note b{color:var(--ink); font-variant-numeric:tabular-nums}
 .info-chips{display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px}
@@ -187,7 +209,8 @@ label.cmp input{accent-color:var(--accent)}
 .cmpbar{position:fixed; left:12px; right:12px; bottom:14px; z-index:30; background:var(--ink); color:var(--ground); border-radius:14px; padding:11px 14px; display:none; align-items:center; gap:10px; font-size:13px; box-shadow:0 8px 28px rgba(10,25,40,.3)}
 .cmpbar.show{display:flex}
 .cmpbar #cmpLabel{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1}
-.cmpbar button{flex:none; border:0; border-radius:10px; padding:10px 16px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; background:var(--accent); color:var(--accent-ink)}
+.cmpbar button{flex:none; border:0; border-radius:10px; padding:10px 16px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; background:var(--grad-total); color:#fff}
+#cmpClear{background:transparent!important; color:var(--ground); border:1px solid rgba(255,255,255,.4)}
 @media (min-width:520px){.cmpbar{left:50%; right:auto; transform:translateX(-50%); max-width:520px; min-width:340px}}
 .overlay{position:fixed; inset:0; background:rgba(10,20,30,.55); z-index:40; display:none; padding:10px}
 .overlay.show{display:flex}
@@ -591,7 +614,7 @@ function renderAll(){
       ? d.tags.map(t => `<span class="tagchip ${homeTags && !homeTags.has(t) ? 'diff' : ''}">${TAG_LABELS[t]}</span>`).join('')
       : '';
     return `
-    <article class="card ${isHome ? 'home' : ''}">
+    <article class="card ${isHome ? 'home' : ''}" data-name="${esc(d.name)}">
       <div class="card-head">
         <span class="jichitai">${esc(d.name)}</span>
         ${sub ? `<span class="sub">${esc(sub)}</span>` : ''}
@@ -599,10 +622,10 @@ function renderAll(){
         ${d.url ? `<a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener">公式 ↗</a>` : ''}
       </div>
       <div class="stages" role="group" aria-label="ステージ別の受給見込み">
-        <div class="st"><span>妊娠〜出生</span><b>${manS(s.birth)}</b></div>
-        <div class="st"><span>未就学</span><b>${manS(s.pre)}</b></div>
-        <div class="st"><span>小中高</span><b>${manS(s.school)}</b></div>
-        <div class="st total"><span>合計</span><b>${manS(s.total)}</b></div>
+        <div class="st"><span>妊娠〜出生</span><b data-val="${s.birth}">${manS(s.birth)}</b></div>
+        <div class="st"><span>未就学</span><b data-val="${s.pre}">${manS(s.pre)}</b></div>
+        <div class="st"><span>小中高</span><b data-val="${s.school}">${manS(s.school)}</b></div>
+        <div class="st total"><span>合計</span><b data-val="${s.total}">${manS(s.total)}</b></div>
       </div>
       <div class="own-note">合計はこの条件で受けられる概算<a class="refmark" href="#notes">注2</a>。うち自治体独自の給付・補助 <b>${man(s.muni)}</b>（★印の項目・詳細で確認できます）</div>
       <div class="info-chips">
@@ -631,6 +654,40 @@ function renderAll(){
     renderCmpBar();
   }));
   renderCmpBar();
+  animateCards();
+}
+
+const _seenCards = new Set();
+function animateCards(){
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.hidden;
+  let newIdx = 0;
+  document.querySelectorAll('#list .card').forEach(card => {
+    const name = card.dataset.name;
+    if(_seenCards.has(name)) return;
+    _seenCards.add(name);
+    if(still) return;
+    card.classList.add('reveal');
+    card.style.animationDelay = (newIdx * 70) + 'ms';
+    const delay = newIdx * 70;
+    newIdx++;
+    card.querySelectorAll('.st b[data-val]').forEach(el => {
+      const target = +el.dataset.val;
+      const final = el.textContent;
+      if(!target){ return; }
+      el.textContent = man(0);
+      const dur = 750;
+      let t0 = null;
+      const tick = now => {
+        if(t0 === null) t0 = now;
+        const p = Math.min((now - t0 - delay) / dur, 1);
+        if(p < 0){ requestAnimationFrame(tick); return; }
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = man(target * e);
+        if(p < 1) requestAnimationFrame(tick); else el.textContent = final;
+      };
+      requestAnimationFrame(tick);
+    });
+  });
 }
 
 function stageCalcHtml(s){
