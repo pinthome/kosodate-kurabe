@@ -8,3 +8,14 @@
 - 制度内容は2026年7月時点の各自治体公式サイト・各都県の公表資料に基づく
 
 単一の `index.html`（データ埋め込み・外部依存なし）で構成。
+
+## ローカル開発
+
+```sh
+npm ci
+cp .dev.vars.example .dev.vars   # devでのhttps強制リダイレクトを抑止（必須）
+npx wrangler dev
+```
+
+`public/index.html` のインラインスクリプトを変更したら、CSPのハッシュ更新が必要
+（`npm test` が期待値を表示するので `public/_headers` に反映する）。

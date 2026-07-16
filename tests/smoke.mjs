@@ -34,6 +34,8 @@ if (m) {
   assert(kyonan && !kyonan.iryoChip.startsWith('18歳'), '鋸南町のチップが中3までになっている');
   const noda = all.find(d => d.name === '野田市');
   assert(noda && noda.iryoChip.includes('500円'), '野田市のチップが基準日時点の500円/回になっている');
+  const shibayama = all.find(d => d.name === '芝山町');
+  assert(shibayama && shibayama.iryoChip.includes('300円') && shibayama.iryo.includes('300円'), '芝山町の自己負担が300円になっている');
 
   // データ品質の不変条件
   const httpUrls = all.filter(d => d.url && !d.url.startsWith('https://'));
@@ -54,6 +56,10 @@ if (scripts.length === 1) {
   assert(!/script-src[^;]*'unsafe-inline'/.test(headers), "CSPのscript-srcにunsafe-inlineがない");
 }
 assert(!/\son[a-z]+\s*=\s*["']/i.test(html.replace(/<script>[\s\S]*?<\/script>/, '')), 'インラインイベントハンドラがない（CSPハッシュ運用の前提）');
+
+// ---- 多子世帯の入力上限: 第5子以降も入力できること ----
+const maxKids = html.match(/const MAX_KIDS = (\d+);/);
+assert(maxKids && +maxKids[1] >= 10, `MAX_KIDSが10以上（実際: ${maxKids && maxKids[1]}）`);
 
 // ---- 計算ロジック: calcStagesをHTMLから抽出して実行 ----
 const calcSrc = html.match(/function calcStages\(d, kids\)\{[\s\S]*?\n\}/);
@@ -79,6 +85,11 @@ if (calcSrc) {
   assert(r.muni === 120_000, `中学給食費・13歳は残り2年分: ${r.muni} === 120000`);
   r = calc(stub({ chuKyushoku: 'all' }), [{ age: 0 }]);
   assert(r.muni === 180_000, `中学給食費・0歳は上限3年分: ${r.muni} === 180000`);
+
+  // 5人きょうだい: 第3子以降が複数いても各人に月3万円が計上される
+  r = calc(stub(), [{ age: 10 }, { age: 8 }, { age: 6 }, { age: 4 }, { age: 0 }]);
+  assert(r.pre === 2_880_000, `児童手当・5人きょうだい（未就学分）: ${r.pre} === 2880000`);
+  assert(r.school === 14_640_000, `児童手当・5人きょうだい（小中高分）: ${r.school} === 14640000`);
 
   // 第3子以降のみ無償の自治体では第1・2子に給食費が付かない
   r = calc(stub({ chuKyushoku: 'third' }), [{ age: 10 }, { age: 8 }, { age: 0 }]);

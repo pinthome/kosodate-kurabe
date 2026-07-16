@@ -1,0 +1,3 @@
+# ローカル開発用の変数。`cp .dev.vars.example .dev.vars` して使う。
+# DEV: wrangler dev での http→https リダイレクトを抑止する（本番には存在しない）
+DEV=true
