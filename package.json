@@ -4,7 +4,8 @@
   "description": "1都3県203市区町村の子育て支援制度を、ご家族の条件に合わせて比較できるWebアプリ。",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node tests/smoke.mjs",
+    "deploy": "wrangler deploy"
   },
   "keywords": [],
   "author": "",
