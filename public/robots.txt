@@ -25,3 +25,5 @@ Disallow: /
 
 User-agent: *
 Disallow: /api/
+
+Sitemap: https://kosodate.pint-home.com/sitemap.xml

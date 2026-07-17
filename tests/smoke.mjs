@@ -67,6 +67,18 @@ assert(built.includes('/api/prefs'), 'ビルド生成物がAPIからデータ取
 assert(!/const PREFS = \{"東京都"/.test(built), 'ビルド生成物にPREFSデータが埋め込まれていない');
 assert(!built.includes('function calcStages'), 'ビルド生成物の識別子がマングルされている');
 
+// ---- SEO: meta / OGP / canonical / 構造化データ（ソースとビルド生成物の両方） ----
+for (const [label, doc] of [['ソース', html], ['ビルド', built]]) {
+  assert(/<meta name="description" content="[^"]{50,}">/.test(doc), `${label}: meta descriptionがある`);
+  assert(doc.includes('<link rel="canonical" href="https://kosodate.pint-home.com/">'), `${label}: canonicalがある`);
+  assert(doc.includes('property="og:title"') && doc.includes('property="og:image"'), `${label}: OGP（og:title/og:image）がある`);
+  assert(doc.includes('name="twitter:card"'), `${label}: Twitterカードがある`);
+  const ld = doc.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  assert(!!ld, `${label}: JSON-LD構造化データがある`);
+  if (ld) { try { JSON.parse(ld[1]); assert(true, `${label}: JSON-LDが正しいJSON`); } catch { assert(false, `${label}: JSON-LDが正しいJSON`); } }
+}
+assert(built.includes('https://kosodate.pint-home.com/img/onb-1.jpg'), 'OGP画像URLが絶対パスで指定されている');
+
 // ---- 多子世帯の入力上限: 第5子以降も入力できること ----
 const maxKids = html.match(/const MAX_KIDS = (\d+);/);
 assert(maxKids && +maxKids[1] >= 10, `MAX_KIDSが10以上（実際: ${maxKids && maxKids[1]}）`);
