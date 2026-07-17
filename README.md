@@ -7,20 +7,37 @@
 - 自治体を最大3つえらんで比較表を作成（県またぎ可・行列固定）
 - 制度内容は2026年7月時点の各自治体公式サイト・各都県の公表資料に基づく
 
-単一の `index.html`（データ埋め込み・外部依存なし）で構成。
+## 構成
+
+| パス | 役割 |
+|---|---|
+| `app/index.html` | **編集するのはここ**（可読ソース。HTML/CSS/JS） |
+| `src/prefs.json` | 制度データ（212自治体。HTMLには埋め込まない） |
+| `src/worker.js` | Worker: https強制＋`/api/prefs`（同一オリジンチェック付き）＋静的配信 |
+| `scripts/build.mjs` | `app/index.html` → `public/index.html`（ミニファイ・識別子マングル・著作権バナー付与） |
+| `public/index.html` | **ビルド生成物**（gitignore済み。直接編集しない） |
+
+制度データは `/api/prefs` から実行時に取得する。HTMLの保存・view-sourceだけではデータが手に入らず、
+APIは `Sec-Fetch-Site` / `Referer` でサイト内fetchのみ許可する（ヘッダ偽装までは防げない簡易対策。
+本命はフッターの著作権表記＋robots.txtのAIボット拒否＋Cloudflareダッシュボードのボット対策）。
 
 ## ローカル開発
 
 ```sh
 npm ci
-cp .dev.vars.example .dev.vars   # devでのhttps強制リダイレクトを抑止（必須）
-npx wrangler dev
+cp .dev.vars.example .dev.vars   # devでのhttps強制リダイレクト抑止＋APIチェック緩和（必須）
+npm run dev                       # build + wrangler dev
 ```
 
-`public/index.html` のインラインスクリプトを変更したら、CSPのハッシュ更新が必要
-（`npm test` が期待値を表示するので `public/_headers` に反映する）。
+`app/index.html` を変更したら再ビルドが必要（`npm run dev` を再実行 or `npm run build`）。
+
+```sh
+npm test          # build + スモークテスト + Workerテスト
+npm run deploy    # build + wrangler deploy
+```
 
 ## 運用メモ（重要）
 
 - `public/_headers` の CSP に `script-src` を**入れないこと**。Cloudflare の Web Analytics（自動計測）が HTML にビーコンを注入する際、`script-src` を自社ハッシュに書き換えるため、`'unsafe-inline'` が無効化されてアプリ本体のインラインスクリプトがブロックされる（2026-07 に本番全損の実績あり）。
 - 厳格な `script-src` を使いたい場合は、先に Cloudflare ダッシュボードで該当サイトの Web Analytics（RUM 自動セットアップ）を無効化すること。
+- 保育所待機児童数は都県で公表時期が異なるため基準年度が混在する（神奈川=令和8年4月1日、他は大半が令和7年4月1日）。毎年8〜9月に各都県の新年度値が出揃ったら更新する。

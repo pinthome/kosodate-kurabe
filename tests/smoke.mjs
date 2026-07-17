@@ -1,8 +1,10 @@
-// スモークテスト: HTML構造・埋め込みデータ・計算ロジック・CSP整合を検証
+// スモークテスト: ソースHTML構造・制度データ・計算ロジック・CSP整合・ビルド生成物を検証
 import { readFileSync } from 'node:fs';
 
-const html = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
+const html = readFileSync(new URL('../app/index.html', import.meta.url), 'utf8');
+const built = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
 const headers = readFileSync(new URL('../public/_headers', import.meta.url), 'utf8');
+const prefs = JSON.parse(readFileSync(new URL('../src/prefs.json', import.meta.url), 'utf8'));
 let failed = 0;
 const assert = (cond, msg) => {
   if (cond) { console.log('ok:', msg); }
@@ -12,12 +14,9 @@ const assert = (cond, msg) => {
 assert(html.startsWith('<!DOCTYPE html>'), 'DOCTYPE宣言がある');
 assert(html.includes('<html lang="ja">'), 'lang="ja"が指定されている');
 assert(html.includes('</body>') && html.includes('</html>'), 'body/htmlが閉じている');
-assert(!html.includes('__PREFS__'), 'データプレースホルダが残っていない');
 
-const m = html.match(/^const PREFS = (.*);$/m);
-assert(!!m, 'PREFSデータ行がある');
-if (m) {
-  const prefs = JSON.parse(m[1]);
+// ---- 制度データ（src/prefs.json） ----
+{
   const names = Object.keys(prefs);
   assert(names.length === 4, '4都県が存在する');
   const total = Object.values(prefs).reduce((s, c) => s + c.munis.length, 0);
@@ -30,6 +29,10 @@ if (m) {
     assert(bad.length === 0, `${pref}: 全自治体に必須フィールドがある${bad.length ? '（欠落: ' + bad.map(d => d.name).join(',') + '）' : ''}`);
   }
   const all = Object.values(prefs).flatMap(c => c.munis);
+
+  // 待機児童数（保育所）が全自治体で設定済み
+  const noHoiku = all.filter(d => d.hoiku == null);
+  assert(noHoiku.length === 0, `保育所待機児童数が全自治体で非null${noHoiku.length ? '（欠落: ' + noHoiku.map(d => d.name).join(',') + '）' : ''}`);
 
   // 医療費チップと詳細の既知の矛盾が再発していないこと
   const kyonan = all.find(d => d.name === '鋸南町');
@@ -49,17 +52,26 @@ if (m) {
   assert(unbalanced.length === 0, `チップの括弧が閉じている${unbalanced.length ? '（違反: ' + unbalanced.map(d => d.name).join(',') + '）' : ''}`);
 }
 
-// ---- CSP: Cloudflare Web Analyticsのビーコン注入と干渉するためscript-srcを含めない（README運用メモ参照） ----
-const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
-assert(scripts.length === 1, 'インラインスクリプトが1つだけ');
+// ---- ソースHTML: データはAPIから取得（埋め込みなし） ----
+const scripts = [...html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)];
+assert(scripts.length === 1, 'インラインスクリプト（module）が1つだけ');
+assert(html.includes("fetch('/api/prefs')"), 'PREFSを/api/prefsから取得している');
+assert(!/^const PREFS = \{/m.test(html), 'ソースにPREFSデータが埋め込まれていない');
 assert(!/script-src/.test(headers), 'CSPにscript-srcがない（本番事故防止・README運用メモ参照）');
-assert(!/\son[a-z]+\s*=\s*["']/i.test(html.replace(/<script>[\s\S]*?<\/script>/, '')), 'インラインイベントハンドラがない');
+assert(!/\son[a-z]+\s*=\s*["']/i.test(html.replace(/<script type="module">[\s\S]*?<\/script>/, '')), 'インラインイベントハンドラがない');
+
+// ---- ビルド生成物（public/index.html） ----
+assert(built.startsWith('<!DOCTYPE html>'), 'ビルド生成物にDOCTYPEがある');
+assert(built.includes('All rights reserved'), 'ビルド生成物に著作権バナーがある');
+assert(built.includes('/api/prefs'), 'ビルド生成物がAPIからデータ取得する');
+assert(!/const PREFS = \{"東京都"/.test(built), 'ビルド生成物にPREFSデータが埋め込まれていない');
+assert(!built.includes('function calcStages'), 'ビルド生成物の識別子がマングルされている');
 
 // ---- 多子世帯の入力上限: 第5子以降も入力できること ----
 const maxKids = html.match(/const MAX_KIDS = (\d+);/);
 assert(maxKids && +maxKids[1] >= 10, `MAX_KIDSが10以上（実際: ${maxKids && maxKids[1]}）`);
 
-// ---- 計算ロジック: calcStagesをHTMLから抽出して実行 ----
+// ---- 計算ロジック: calcStagesをソースHTMLから抽出して実行 ----
 const calcSrc = html.match(/function calcStages\(d, kids\)\{[\s\S]*?\n\}/);
 assert(!!calcSrc, 'calcStages関数を抽出できる');
 if (calcSrc) {

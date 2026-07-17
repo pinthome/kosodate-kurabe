@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>引っ越し先の子育て支援くらべ｜1都3県212自治体を比較</title>
+<style>
+:root{
+  color-scheme:light;
+  --ground:#EBF6FF; --surface:#FFFFFF; --ink:#0B1526; --muted:#5A6B7E;
+  --line:#E1EBF5; --accent:#0B78D0; --accent-ink:#FFFFFF; --accent-soft:#E0F1FF;
+  --accent-pop:#24AFFF;
+  --ok:#2E7D5B; --ok-soft:#E6F2EC; --warn:#B07A1E; --bar:#CBDFF0; --home:#FFF7E6;
+  --c-kuni:#7E90A3; --c-to:#0B78D0; --c-shi:#2E7D5B;
+  --grad-accent:linear-gradient(135deg,#2FA8F5 0%,#0B78D0 100%);
+  --grad-total:linear-gradient(135deg,#39A17C 0%,#2C7A57 100%);
+  --joy:#F07B5F; --joy-soft:#FDEEE8; --joy-deep:#D0532F;
+  --grad-joy:linear-gradient(135deg,#F5896B 0%,#E2664A 100%);
+  --sh-sm:0 2px 6px rgba(24,60,100,.05), 0 8px 24px rgba(24,60,100,.06);
+  --sh-md:0 4px 16px rgba(24,60,100,.07), 0 18px 44px rgba(24,60,100,.08);
+  --sh-accent:0 6px 18px rgba(11,120,208,.25);
+  --sh-total:0 6px 18px rgba(46,125,91,.28);
+  --sh-joy:0 6px 18px rgba(224,90,58,.28);
+  --r-card:26px; --r-input:16px; --r-pill:999px;
+  --font-round:"Hiragino Maru Gothic ProN","ヒラギノ丸ゴ ProN",ui-rounded,"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+footer.note{scroll-margin-top:16px}
+body{
+  margin:0; color:var(--ink);
+  background:
+    radial-gradient(1200px 520px at 50% -220px, rgba(255,255,255,.75), transparent 70%),
+    radial-gradient(900px 420px at 100% 240px, rgba(36,175,255,.09), transparent 70%),
+    var(--ground);
+  font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic",sans-serif;
+  font-size:15px; line-height:1.7; -webkit-text-size-adjust:100%;
+}
+@keyframes cardIn{from{opacity:0; transform:translateY(14px) scale(.99)} to{opacity:1; transform:none}}
+@keyframes pop{0%{transform:scale(1)} 40%{transform:scale(1.12)} 100%{transform:scale(1)}}
+@media (prefers-reduced-motion: no-preference){
+  .reveal{animation:cardIn .5s cubic-bezier(.22,.7,.3,1) both}
+  .pref-tabs button, .mode-card, .mrow, .togglerow label, select.wide, .searchbox, .addkid, .gobtn, .st{transition:box-shadow .18s ease, border-color .18s ease, background .18s ease, transform .12s ease}
+  .gobtn:active, .cmpbar button:active, .mrow .mact:active{transform:scale(.97)}
+}
+.wrap{max-width:680px; margin:0 auto; padding:30px 16px 120px}
+header.hero{text-align:center}
+.eyebrow{display:inline-block; font-size:11px; letter-spacing:.12em; color:var(--accent); font-weight:700; background:var(--surface); border-radius:var(--r-pill); padding:6px 16px; box-shadow:var(--sh-sm)}
+h1{font-family:var(--font-round); font-size:27px; font-weight:800; letter-spacing:.01em; margin:14px 0 10px; line-height:1.4}
+h1 .hl{background:linear-gradient(transparent 68%, rgba(36,175,255,.35) 68%)}
+.lede{color:var(--muted); font-size:13.5px; margin:0 auto; line-height:1.8; max-width:34em}
+.hero .linkfake{margin-top:12px}
+.pref-tabs{display:flex; gap:8px; margin:22px -16px 0; padding:4px 16px 8px; overflow-x:auto; -webkit-overflow-scrolling:touch; scrollbar-width:none; justify-content:flex-start}
+.pref-tabs::-webkit-scrollbar{display:none}
+.pref-tabs button{flex:none; border:0; background:rgba(255,255,255,.7); color:var(--muted); border-radius:var(--r-pill); padding:11px 18px; font:inherit; font-size:13.5px; font-weight:600; cursor:pointer; white-space:nowrap}
+.pref-tabs button.on{background:var(--ink); color:#fff; font-weight:700; box-shadow:0 6px 16px rgba(11,21,38,.22)}
+.pref-tabs button .n{font-size:10.5px; color:inherit; opacity:.65; margin-left:4px}
+.layer-tag{display:inline-block; font-size:10px; font-weight:700; letter-spacing:.05em; border-radius:4px; padding:1px 7px; margin-right:6px; vertical-align:1px; color:#fff}
+.layer-tag.kuni{background:var(--c-kuni)} .layer-tag.to{background:var(--c-to)} .layer-tag.shi{background:var(--c-shi)}
+.panel{background:var(--surface); border:0; border-radius:var(--r-card); padding:24px 20px; margin-top:18px; box-shadow:var(--sh-sm)}
+.panel h2{font-family:var(--font-round); font-size:16px; color:var(--ink); font-weight:800; margin:0 0 16px; display:flex; align-items:center; gap:10px}
+.panel h2 .step{flex:none; width:26px; height:26px; border-radius:50%; background:var(--grad-accent); color:#fff; font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center; box-shadow:var(--sh-accent)}
+.cond{margin-bottom:22px}
+.cond:last-child{margin-bottom:0}
+.cond .lbl{font-size:13.5px; font-weight:700; margin-bottom:10px}
+/* --- 入力コントロール共通 --- */
+select, .searchbox{-webkit-appearance:none; appearance:none}
+select.wide, .pickrow select, .sortrow select{
+  font:inherit; font-size:15px; color:var(--ink); font-weight:500;
+  border:1.5px solid var(--line); border-radius:var(--r-input); background:var(--surface);
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2323648F' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 12px center;
+  padding:0 40px 0 14px; height:52px; width:100%; cursor:pointer;
+}
+select.wide:focus, .pickrow select:focus, .searchbox:focus{border-color:var(--accent); outline:none; box-shadow:0 0 0 3px var(--accent-soft)}
+.kids{display:flex; flex-direction:column; gap:10px}
+.kid{display:flex; align-items:center; gap:10px; border:1.5px solid var(--line); border-radius:var(--r-input); padding:0 8px 0 16px; background:var(--surface); height:52px}
+.kid label{font-size:13px; color:var(--muted); font-weight:600; flex:none}
+.kid select{font:inherit; font-size:15px; border:0; color:var(--ink); font-weight:700; flex:1; height:100%; cursor:pointer;
+  -webkit-appearance:none; appearance:none; background:transparent;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%2323648F' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'><path d='M6 9l6 6 6-6'/></svg>");
+  background-repeat:no-repeat; background-position:right 6px center; padding-right:28px}
+.kid button{flex:none; border:0; background:var(--ground); color:var(--muted); cursor:pointer; font-size:15px; width:32px; height:32px; border-radius:8px; line-height:1}
+.addkid{border:1.5px dashed var(--accent); background:var(--accent-soft); color:var(--accent); border-radius:var(--r-pill); padding:0 16px; height:48px; font:inherit; font-size:14px; cursor:pointer; font-weight:700; width:100%}
+.addkid:disabled{opacity:.4}
+.togglerow{display:flex; flex-wrap:wrap; gap:8px}
+.togglerow label{display:flex; align-items:center; gap:8px; font-size:14px; border:1.5px solid var(--line); border-radius:var(--r-input); padding:12px 16px; cursor:pointer; color:var(--ink); background:var(--surface); flex:1 1 100%; min-height:50px}
+.togglerow label:has(input:checked){border-color:var(--accent); color:var(--accent); background:var(--accent-soft); font-weight:700}
+.togglerow input{accent-color:var(--accent); margin:0; width:20px; height:20px}
+.hint{font-size:12px; color:var(--muted); margin-top:8px; line-height:1.65}
+.pickrow{display:flex; gap:10px; flex-direction:column}
+.pickrow select{flex:1}
+.picked{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; align-items:center}
+.picked:empty{margin-top:0}
+.picked .pchip{display:flex; align-items:center; gap:6px; border:1.5px solid var(--accent); color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:8px 10px 8px 15px; font-size:13.5px; font-weight:700}
+.picked .pchip button{border:0; background:none; color:var(--accent); cursor:pointer; font-size:15px; padding:0 3px; line-height:1}
+.gobtn{border:0; background:var(--ink); color:#fff; border-radius:var(--r-pill); padding:0 24px; height:56px; font:inherit; font-family:var(--font-round); font-size:15.5px; font-weight:700; cursor:pointer; width:100%; box-shadow:0 8px 22px rgba(11,21,38,.25)}
+.gobtn:hover{filter:brightness(1.18)}
+.cmpgo-wrap{margin-top:16px; text-align:center}
+.cmpgo-wrap:empty{margin-top:0}
+.common-grid{display:grid; grid-template-columns:1fr; gap:10px}
+.common-box{border:1px solid var(--line); border-radius:10px; padding:12px 14px}
+.common-box h3{font-size:12.5px; margin:0 0 6px; font-weight:700}
+.common-box ul{margin:0; padding:0; list-style:none; font-size:12px}
+.common-box li{display:flex; justify-content:space-between; gap:10px; padding:3px 0; border-top:1px solid var(--line)}
+.common-box li:first-child{border-top:0}
+.common-box li .amt{font-variant-numeric:tabular-nums; font-weight:600; white-space:nowrap; color:var(--muted); font-size:11px}
+.sortrow{display:flex; align-items:center; justify-content:space-between; gap:12px; margin:20px 0 4px; flex-wrap:wrap}
+.sortrow .count{font-size:12.5px; color:var(--muted); font-weight:600}
+.sortrow select{flex:1 1 200px; min-height:46px; max-width:100%}
+.modes{display:grid; grid-template-columns:1fr; gap:10px; margin-top:18px}
+@media (min-width:760px){.modes{grid-template-columns:1fr 1fr; max-width:760px}}
+.mode-card{display:flex; flex-direction:column; align-items:flex-start; gap:4px; text-align:left; border:0; background:var(--surface); border-radius:20px; padding:18px 20px; font:inherit; cursor:pointer; box-shadow:var(--sh-sm)}
+.mode-card:hover{background:var(--accent-soft); transform:translateY(-2px)}
+.mode-card .mc-num{font-size:10px; font-weight:700; letter-spacing:.1em; color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:2px 10px}
+.mode-card .mc-title{font-size:15px; font-weight:700; color:var(--ink)}
+.mode-card .mc-desc{font-size:12px; color:var(--muted); line-height:1.6}
+.onb-wrap{margin-top:26px; max-width:640px}
+.onb-hello{font-size:13px; line-height:1.9; color:var(--ink); margin:0 0 14px}
+details.onb{border:1px solid var(--line); border-radius:10px; background:var(--surface); margin-bottom:8px}
+details.onb summary{padding:12px 16px; font-size:13px; font-weight:700; cursor:pointer; list-style:none; display:flex; align-items:center; justify-content:space-between}
+details.onb summary::after{content:'＋'; color:var(--accent); font-weight:400}
+details.onb[open] summary::after{content:'−'}
+details.onb .onb-body{padding:0 16px 14px; font-size:12.5px; line-height:1.85; color:var(--ink)}
+details.onb .onb-body p{margin:0 0 10px}
+details.onb .onb-body dt{font-weight:700; margin-top:10px}
+details.onb .onb-body dd{margin:2px 0 0}
+details.onb .onb-body ul{margin:0; padding-left:1.3em}
+details.onb .onb-body li{margin-bottom:4px}
+.onbov{position:fixed; inset:0; z-index:60; background:rgba(10,20,30,.6); display:none; padding:16px}
+.onbov.show{display:flex}
+.onbcard{margin:auto; max-width:480px; width:100%; background:var(--surface); color:var(--ink); border-radius:26px; display:flex; flex-direction:column; max-height:86vh; box-shadow:0 10px 40px rgba(5,15,25,.3)}
+.onbhead{display:flex; justify-content:flex-end; padding:10px 12px 0}
+.onbhead button{border:0; background:none; color:var(--muted); font:inherit; font-size:12px; cursor:pointer; padding:4px 8px}
+.onbbody{padding:2px 16px 8px; overflow-y:auto; font-size:13px; line-height:1.9; height:min(58vh, 440px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px}
+.onbimg{display:block; max-width:100%; max-height:100%; min-height:0; object-fit:contain; border-radius:16px}
+.onb-by{margin:0; flex:none; font-size:11.5px; color:var(--muted)}
+.onb-by a{color:var(--accent); font-weight:600}
+.onbbody h3{font-size:16px; margin:8px 0 12px; font-weight:700}
+.onbbody p{margin:0 0 12px}
+.onbbody dt{font-weight:700; margin-top:12px}
+.onbbody dd{margin:2px 0 0; color:var(--muted)}
+.onbbody ul{margin:0; padding-left:1.3em}
+.onbbody li{margin-bottom:6px}
+.onbfoot{display:flex; align-items:center; gap:10px; padding:12px 20px 18px}
+.onbnav{border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:999px; padding:8px 18px; font:inherit; font-size:12.5px; cursor:pointer}
+.onbnav.primary{border-color:var(--accent); background:var(--accent); color:var(--accent-ink); font-weight:700}
+.onbnav:disabled{opacity:.35; cursor:default}
+.onbdots{display:flex; gap:6px; margin:0 auto}
+.onbdots i{width:7px; height:7px; border-radius:50%; background:var(--bar); cursor:pointer}
+.onbdots i.on{background:var(--accent)}
+.onb-credit{font-size:12px; color:var(--muted); margin-top:16px; line-height:1.8}
+.onb-credit a{color:var(--accent); font-weight:600}
+.backrow{display:flex; justify-content:space-between; gap:12px; margin-top:16px}
+.searchbox{font:inherit; font-size:15px; border:1.5px solid var(--line); border-radius:var(--r-pill); padding:0 20px; height:52px; background:var(--surface); color:var(--ink); width:100%}
+.browselist{margin-top:12px; max-height:440px; overflow-y:auto; border:1.5px solid var(--line); border-radius:18px; -webkit-overflow-scrolling:touch}
+.mgroup{position:sticky; top:0; background:var(--ground); font-size:11px; font-weight:700; letter-spacing:.06em; color:var(--muted); padding:8px 16px; border-bottom:1px solid var(--line)}
+.mrow{display:flex; align-items:center; gap:10px; width:100%; text-align:left; border:0; border-bottom:1px solid var(--line); background:var(--surface); padding:14px 16px; font:inherit; cursor:pointer; flex-wrap:wrap; min-height:60px}
+.mrow:last-child{border-bottom:0}
+.mrow:active{background:var(--accent-soft)}
+.mrow.on{background:var(--ok-soft)}
+.mrow b{font-size:15px; color:var(--ink)}
+.mrow .msub{font-size:11px; color:var(--muted)}
+.mrow .mact{margin-left:auto; font-size:12.5px; font-weight:700; color:var(--accent); white-space:nowrap; border:1.5px solid var(--accent); border-radius:999px; padding:6px 14px; background:var(--surface)}
+.mrow.on .mact{color:#fff; background:var(--ok); border-color:var(--ok)}
+.emptyhint{color:var(--muted); font-size:13px; margin-top:18px; line-height:1.7}
+.resultnote{font-size:11px; color:var(--muted); line-height:1.6; background:rgba(255,255,255,.7); border:0; border-radius:16px; padding:12px 16px; margin-top:8px}
+.resultnote b{color:var(--ink); font-weight:600}
+.resultnote a{color:var(--accent); text-decoration:underline; text-underline-offset:2px; cursor:pointer}
+.refmark{font-size:9.5px; color:var(--accent); font-weight:700; vertical-align:2px; margin-left:1px; text-decoration:none}
+footer.note h3{font-size:11px; letter-spacing:.08em; color:var(--ink); margin:0 0 8px; font-weight:700}
+footer.note .fn{margin:0 0 7px; display:flex; gap:7px}
+footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums}
+.calcnote-mini{font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.5}
+.card{background:var(--surface); border:0; border-radius:22px; padding:18px; margin-top:12px; box-shadow:var(--sh-md)}
+@media (prefers-reduced-motion: no-preference){.card{transition:transform .18s ease, box-shadow .18s ease}}
+.card:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(22,40,58,.09), 0 20px 44px rgba(22,40,58,.09)}
+.card-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+.jichitai{font-size:16px; font-weight:700}
+.card-head .sub{font-size:10.5px; color:var(--muted)}
+.card-head a.ext{margin-left:auto; color:var(--accent); font-size:11px; text-decoration:none; white-space:nowrap}
+.stages{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:12px 0 4px}
+.st{background:#F1F8FF; border-radius:16px; padding:9px 2px 9px; text-align:center}
+.st .ico{display:block; font-style:normal; font-size:15px; line-height:1.2}
+.st span{display:block; font-size:10px; color:var(--muted); letter-spacing:.01em}
+.st b{display:block; font-size:13.5px; font-variant-numeric:tabular-nums; font-weight:700; margin-top:3px; white-space:nowrap; letter-spacing:-.03em}
+.st.total{background:var(--grad-joy); box-shadow:var(--sh-joy); position:relative; overflow:visible}
+.st.total span{color:rgba(255,255,255,.88)}
+.st.total b{color:#fff; font-size:14.5px}
+.st.total.joypop{animation:joyPop .5s cubic-bezier(.34,1.56,.64,1)}
+.cf{position:absolute; top:0; left:50%; width:6px; height:9px; border-radius:2px; pointer-events:none; opacity:0; animation:cfFall .9s ease-out forwards}
+@keyframes joyPop{0%{transform:scale(1)} 45%{transform:scale(1.09)} 100%{transform:scale(1)}}
+@keyframes cfFall{0%{opacity:1; transform:translate(0,0) rotate(0)} 100%{opacity:0; transform:translate(var(--cfx), -34px) rotate(var(--cfr))}}
+.cmpdots{display:inline-flex; gap:4px; margin-right:8px; vertical-align:-1px}
+.cmpdots i{width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.3)}
+.cmpdots i.on{background:var(--joy)}
+.pulse{animation:btnPulse .6s ease}
+@keyframes btnPulse{0%{transform:scale(1)} 35%{transform:scale(1.06)} 70%{transform:scale(.98)} 100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){
+  .st.total.joypop, .pulse, .cf{animation:none}
+}
+.own-note{font-size:10.5px; color:var(--muted); margin-bottom:8px}
+.own-note b{color:var(--ink); font-variant-numeric:tabular-nums}
+.info-chips{display:flex; flex-wrap:wrap; gap:5px; margin-bottom:6px}
+.ichip{font-size:10.5px; border-radius:6px; padding:2px 8px; background:var(--ground); color:var(--muted); white-space:nowrap}
+.ichip b{color:var(--ink); font-weight:600}
+.ichip.good b{color:var(--ok)}
+.ichip.bad b{color:var(--warn)}
+.tagchips{display:flex; flex-wrap:wrap; gap:5px}
+.tagchip{font-size:10.5px; border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:1px 9px; white-space:nowrap}
+.card-actions{display:flex; gap:16px; margin-top:10px; align-items:center}
+.linkbtn{border:0; background:none; color:var(--accent); font:inherit; font-size:12px; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:3px}
+.morebtn{border:0; background:var(--accent-soft); color:var(--accent); font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; border-radius:var(--r-pill); padding:8px 18px}
+.morebtn:hover{filter:brightness(.96)}
+label.cmp{font-size:12px; color:var(--muted); display:flex; align-items:center; gap:6px; cursor:pointer; margin-left:auto}
+label.cmp input{accent-color:var(--accent)}
+.detail{display:none; border-top:1px solid var(--line); margin-top:12px; padding-top:12px}
+.detail.open{display:block}
+.detail h4{font-size:12px; margin:12px 0 5px; font-weight:700}
+.detail h4:first-child{margin-top:0}
+.detail dl{margin:0; display:grid; gap:9px}
+.detail dt{font-size:10.5px; letter-spacing:.06em; color:var(--muted); font-weight:600; margin-bottom:1px}
+.detail dd{margin:0; font-size:12px; white-space:pre-line}
+.detail .common-note{font-size:12px; white-space:pre-line}
+.stagecalc{font-size:11.5px; background:var(--ground); border-radius:8px; padding:10px 12px; margin-bottom:4px}
+.stagecalc .sg{font-weight:700; margin-top:6px}
+.stagecalc .sg:first-child{margin-top:0}
+.stagecalc .ln{display:flex; justify-content:space-between; gap:10px; color:var(--muted)}
+.stagecalc .ln .a{font-variant-numeric:tabular-nums; white-space:nowrap}
+.detail .official{display:inline-block; margin-top:10px; border:0; color:var(--accent); background:var(--accent-soft); border-radius:var(--r-pill); padding:9px 18px; font-size:12px; font-weight:700; text-decoration:none}
+.cmpbar{position:fixed; left:12px; right:12px; bottom:14px; z-index:30; background:var(--ink); color:#EAF2FA; border-radius:var(--r-pill); padding:11px 12px 11px 20px; display:none; align-items:center; gap:10px; font-size:13px; box-shadow:0 10px 32px rgba(10,25,40,.35)}
+.cmpbar.show{display:flex}
+.cmpbar #cmpLabel{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1}
+.cmpbar button{flex:none; border:0; border-radius:var(--r-pill); padding:10px 18px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; background:var(--accent-pop); color:#062A44}
+#cmpClear{background:transparent!important; color:var(--ground); border:1px solid rgba(255,255,255,.4)}
+@media (min-width:520px){.cmpbar{left:50%; right:auto; transform:translateX(-50%); max-width:520px; min-width:340px}}
+.overlay{position:fixed; inset:0; background:rgba(10,20,30,.55); z-index:40; display:none; padding:10px}
+.overlay.show{display:flex}
+.modal{background:var(--surface); color:var(--ink); border-radius:24px; margin:auto; max-width:1000px; width:100%; max-height:92vh; display:flex; flex-direction:column}
+.modal-head{display:flex; align-items:center; padding:14px 18px; border-bottom:1px solid var(--line)}
+.modal-head h2{font-size:14px; margin:0; font-weight:700; font-family:var(--font-round)}
+.modal-head button{margin-left:auto; border:0; background:#F1F6FB; color:var(--muted); border-radius:var(--r-pill); padding:6px 16px; font:inherit; font-size:12px; cursor:pointer}
+.modal-body{overflow:auto; padding:0 16px 16px}
+table.cmp{border-collapse:separate; border-spacing:0; width:100%; margin-top:10px; font-size:12.5px}
+table.cmp th, table.cmp td{border-bottom:1px solid var(--line); padding:12px 12px; vertical-align:top; text-align:left; white-space:pre-line; min-width:138px; line-height:1.65}
+table.cmp td + td, table.cmp th + th{border-left:1px solid var(--line)}
+table.cmp th:first-child, table.cmp td:first-child{min-width:78px; max-width:96px; font-size:10.5px; letter-spacing:.02em; color:var(--muted); font-weight:700; line-height:1.5}
+table.cmp thead th{border-top:0; font-size:14.5px; font-weight:700; color:var(--ink); position:sticky; top:0; background:var(--surface); z-index:3; box-shadow:0 2px 0 var(--line)}
+table.cmp thead th .pn{display:block; font-size:10px; color:var(--muted); font-weight:400; margin-top:1px}
+table.cmp th:first-child, table.cmp td:first-child{position:sticky; left:0; background:var(--surface); z-index:2; box-shadow:2px 0 0 var(--line)}
+table.cmp thead th:first-child{z-index:4}
+table.cmp tr.section td{position:sticky; left:0}
+table.cmp td .yen{display:block; font-size:16px; letter-spacing:-.02em}
+table.cmp td .sub2{display:block; font-size:10.5px; color:var(--muted); margin-top:2px}
+table.cmp tr.rtotal td{background:#FFF9F6}
+table.cmp tr.rtotal td:first-child{background:var(--surface)}
+table.cmp tr.rtotal .yen{font-size:18px; color:var(--joy-deep)}
+table.cmp td.longtext{font-size:11.5px; line-height:1.7}
+.cmphint{font-size:11px; color:var(--muted); margin:10px 2px 0; display:flex; align-items:center; gap:6px; position:sticky; left:0}
+@media (min-width:760px){.cmphint{display:none}}
+details.panel > summary{cursor:pointer; list-style:none; font-size:12px; letter-spacing:.1em; color:var(--muted); font-weight:600; display:flex; justify-content:space-between; align-items:center; gap:10px}
+details.panel > summary::-webkit-details-marker{display:none}
+details.panel > summary::after{content:'＋'; color:var(--accent); font-size:14px}
+details.panel[open] > summary::after{content:'−'}
+details.panel .common-grid{margin-top:14px}
+table.cmp tr.section td{background:var(--ground); font-weight:700; color:var(--ink); font-size:11px; letter-spacing:.06em}
+table.cmp tr.section .seclabel{position:sticky; left:16px; display:inline-block}
+table.cmp td .yen{font-variant-numeric:tabular-nums; font-weight:700}
+footer.note{margin-top:28px; font-size:10.5px; color:var(--muted); border-top:1px solid var(--line); padding-top:14px}
+footer.note p{margin:0 0 6px}
+button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+@media (min-width:760px){
+  .wrap{max-width:1000px; padding:36px 24px 120px}
+  h1{font-size:30px}
+  .lede{font-size:15px}
+  .pref-tabs{margin:22px 0 0; padding:0; overflow:visible}
+  .common-grid{grid-template-columns:1fr 1fr; gap:16px}
+  .panel{padding:26px 26px}
+  .card{padding:20px 22px}
+  .stages{max-width:560px}
+  .cond-wrap{display:flex; flex-wrap:wrap; gap:28px 32px}
+  .cond-wrap .cond{margin-bottom:0; min-width:300px; flex:1}
+  select.wide, .pickrow select, .searchbox{max-width:420px}
+  .addkid{max-width:280px}
+  .cmpgo-wrap .gobtn{max-width:420px}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="site hero">
+  <div class="eyebrow">1都3県212市区町村を、まるごと比較</div>
+  <h1><span style="display:inline-block">引っ越し先の</span><span style="display:inline-block"><span class="hl">子育て支援くらべ</span></span></h1>
+  <p class="lede">住む自治体で、受けられる子育て支援は大きく変わります。ご家族の条件を入れるだけで、妊娠〜出生・未就学・小中高のステージ別に「これから受けられる支援」と自治体ごとの制度の違いがわかります。</p>
+  <p style="margin:10px 0 0"><button class="linkbtn" id="onbOpenBtn" style="font-size:12.5px">💡 はじめての方へ（ごあいさつ・活用方法）</button></p>
+  <div class="pref-tabs" role="tablist" id="prefTabs"></div>
+</header>
+
+<div class="onbov" id="onbOv" role="dialog" aria-modal="true" aria-label="はじめての方へ">
+  <div class="onbcard">
+    <div class="onbhead"><button id="onbClose" aria-label="閉じる">スキップ ✕</button></div>
+    <div class="onbbody" id="onbBody"></div>
+    <div class="onbfoot">
+      <button class="onbnav" id="onbPrev">もどる</button>
+      <div class="onbdots" id="onbDots"></div>
+      <button class="onbnav primary" id="onbNext">次へ</button>
+    </div>
+  </div>
+</div>
+
+
+<section class="panel" aria-label="条件入力">
+  <h2><span class="step">1</span>ご家族の条件を入れる</h2>
+  <div class="cond-wrap">
+    <div class="cond">
+      <div class="lbl">お子さまの構成（年上から順に）</div>
+      <div class="kids" id="kids"></div>
+      <div class="hint">18〜21歳のごきょうだいも入力すると、児童手当の第3子判定に反映されます。</div>
+    </div>
+    <div class="cond">
+      <div class="lbl">未就学のお子さまの保育の予定</div>
+      <select class="wide" id="careSel">
+        <option value="ninka">認可保育園を利用予定</option>
+        <option value="ninkagai">認証保育所など認可外を利用予定</option>
+        <option value="yochien">幼稚園を利用予定</option>
+        <option value="none">未定・自宅保育</option>
+      </select>
+      <div class="hint">0〜2歳の保育料無償化などを金額に反映します（詳しい前提は結果の注記に記載）。</div>
+    </div>
+    <div class="cond">
+      <div class="lbl">世帯の状況（あてはまるもの）</div>
+      <div class="togglerow">
+        <label><input type="checkbox" id="optSingle">ひとり親世帯</label>
+        <label><input type="checkbox" id="optTwins">多胎（双子など）</label>
+        <label><input type="checkbox" id="optCare">障害・医療的ケアあり</label>
+      </div>
+      <div class="hint">手当や補助の対象・目安に反映します。</div>
+    </div>
+  </div>
+</section>
+
+<details class="panel" aria-label="共通の支援">
+  <summary id="commonTitle"></summary>
+  <div class="common-grid" id="commonGrid"></div>
+</details>
+
+
+<section class="panel" aria-label="自治体をえらんで比較">
+  <h2><span class="step">2</span>くらべる自治体をえらぶ</h2>
+  <div class="hint" style="margin:-8px 0 12px">検索するか一覧からタップで追加（最大3つ・県をまたいでOK）。</div>
+  <input type="search" id="muniSearch" class="searchbox" placeholder="🔍 自治体名で検索（例: 世田谷、流山、大宮）">
+  <div id="browseList" class="browselist"></div>
+  <div class="picked" id="cmpPicked"></div>
+</section>
+
+<div id="showAllRow" style="margin-top:16px">
+  <button class="linkbtn" id="showAllBtn"></button>
+</div>
+
+<div class="sortrow" style="margin-top:22px">
+  <span class="count" id="countNote"></span>
+  <select id="sortSel" aria-label="並び順">
+    <option value="name">地域順（標準）</option>
+    <option value="total">受給見込み額の大きい順（入力条件で計算）</option>
+    <option value="taiki">保育所待機児童の少ない順（公表値）</option>
+  </select>
+</div>
+
+<p class="resultnote">
+  <b>※ 表示金額は「これから受けられる支援」の概算です。</b>実際は世帯所得・保育の利用状況・申請/居住要件により変わります<a class="refmark" href="#notes">注1</a>。合計は国・都県の共通分を含み、<b>★</b>印が自治体独自の給付・補助です。医療費・給食・待機児童は最新の公表時点にもとづく参考値<a class="refmark" href="#notes">注5</a>、「そのほかの制度」タグは公表情報からの機械抽出<a class="refmark" href="#notes">注4</a>です。前提と出典は各カードの「詳しく見る」と<a href="#notes">下部の注記</a>をご確認ください。
+</p>
+
+<div id="list"></div>
+<div class="cmpgo-wrap" id="cmpGoWrap"></div>
+
+<footer class="note" id="notes">
+  <h3>注記・出典</h3>
+  <div class="fn"><span class="num">注1</span><span><b>金額はすべて概算です。</b>「これから受けられる」現金・商品券・ポイント給付と、金額換算できる補助の合計で、すでに年齢が過ぎた給付やイベントは含みません。給付には居住期間・申請などの要件があり、実際に受給できるとは限りません。金額に「（都標準額を推定）」等と付記した項目は公表額が非公開のため近隣の標準額で推定しています。</span></div>
+  <div class="fn"><span class="num">注2</span><span><b>ステージ別金額の内訳。</b>妊娠〜出生＝妊婦のための支援給付・出産育児一時金・都の赤ちゃんファースト・自治体の出産祝金等／未就学（0〜5歳）＝児童手当・018サポート・誕生日等の給付・保育料無償化や認可外補助（保育予定に応じて）／小中高（6〜18歳）＝児童手当・018サポート・入学祝金・中学校給食費（無償の場合 月5,000円×中学の残り期間で概算）。児童手当の第3子以降増額は、入力されたお子さまのうち22歳未満のきょうだい数で1年ごとに判定した概算です（18〜21歳のごきょうだいも入力すると精度が上がります。実際の判定は22歳年度末までの子が対象です）。</span></div>
+  <div class="fn"><span class="num">注3</span><span><b>保育料無償化・高校授業料の扱い。</b>保育料は「認可保育園を利用予定」の場合のみ、0〜2歳児が無償になる自治体（東京＝都制度で第1子から所得制限なし、埼玉＝県事業で第3子以降、ほか市町村独自）について平均3万円/月×利用月数で換算しています。実際の保育料は世帯所得で変わります。全国共通の無償化（3〜5歳、非課税世帯の0〜2歳、同時在園の多子軽減）は差が出ないため換算していません。高校授業料は2026年4月から国制度で公私とも実質無償（私立上限45.7万円/年・所得制限なし）のため換算せず、都県の上乗せ・入学金補助の差は「都県の制度」欄に記載しています。</span></div>
+  <div class="fn"><span class="num">注4</span><span><b>「そのほかの制度」タグは公表情報からの機械抽出</b>による概要で、制度の有無・名称の目安です。詳細・最新の実施状況は各カードの詳細と公式サイトでご確認ください。</span></div>
+  <div class="fn"><span class="num">注5</span><span><b>医療費・給食・待機児童。</b>医療費助成は金額換算していません。学校給食費は、中学校の無償化のみ月5,000円×中学の残り期間で概算換算して合計に含めます（小学校は2026年4月から全国共通のため換算しません。一部補助・多子限定の場合は該当時のみ）。待機児童数は保育所が令和7年〜令和8年4月1日時点の最新公表値（公表時期が都県で異なるため年度が混在します）・放課後児童クラブが令和7年5月1日時点の公表値です（埼玉県の学童は50人以上の自治体のみ公表のため、それ以外は「50人未満」と表示）。</span></div>
+  <div class="fn"><span class="num">注6</span><span>制度内容は<b>2026年7月時点</b>の各自治体公式サイト・各都県の公表資料にもとづく参考情報です。制度は随時変わり、支給の可否には条件がある場合があります。ご提案・意思決定の前に、必ず各自治体の公式サイトで最新情報をご確認ください。</span></div>
+  <details class="onb" style="margin-top:14px"><summary>免責事項</summary>
+      <div class="onb-body"><p>当ページで提供している子育て支援制度の一覧は、各自治体の公式ウェブサイト等に基づき作成しておりますが、情報の正確性、最新性、完全性を保証するものではありません。制度の内容は頻繁に変更される可能性があり、情報が最新の情報と異なる場合もございます。必ず各自治体の公式ウェブサイト等で最新の情報をご確認ください。当ページの情報に基づいて行動した結果、利用者に何らかの損害が発生した場合でも、当方は一切の責任を負いかねます。また、この一覧は情報提供のみを目的としており、法的助言を提供するものではありません。具体的な手続きや適用条件については、各自治体の窓口に直接お問い合わせください。</p>
+      <p>【リンク先の情報】この一覧からリンクしている外部ウェブサイトの情報については、当方は一切の責任を負いません。リンク先のウェブサイトの内容やプライバシーポリシー等については、各ウェブサイトの責任となります。</p>
+      <p>【著作権】この一覧（掲載データ・比較表・文章・プログラムを含む）の著作権は作成者に帰属します。無断転載・複製・改変、およびスクレイピング等の自動取得によるデータ収集・再配布・データベース化を禁じます。ただし、個人的な利用や非営利目的での利用は、出典を明記すれば許可される場合があります。</p>
+      <p>【変更の可能性】この免責事項は、予告なく変更される場合があります。</p></div>
+  </details>
+  <p class="onb-credit">作成者<br><a href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener">ゆか⌇都心に住みたい子育て世帯のおうち探し</a></p>
+</footer>
+</div>
+
+<div class="cmpbar" id="cmpBar">
+  <span id="cmpLabel"></span>
+  <button id="cmpOpen">比較する</button>
+  <button id="cmpClear" style="background:transparent;color:var(--ground);border:1px solid currentColor">解除</button>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-label="自治体比較">
+  <div class="modal">
+    <div class="modal-head"><h2>自治体をくらべる</h2><button id="cmpClose">閉じる</button></div>
+    <div class="modal-body" id="cmpBody"></div>
+  </div>
+</div>
+
+<script type="module">
+const PREFS = await fetch('/api/prefs').then(r => r.ok ? r.json() : Promise.reject(new Error('HTTP ' + r.status))).catch(err => {
+  document.body.insertAdjacentHTML('afterbegin', '<p style="margin:16px;padding:12px;border:1px solid #e5a3a3;border-radius:8px;background:#fdf2f2;color:#8a2b2b;font-size:14px">データの読み込みに失敗しました。時間をおいて再読み込みしてください。</p>');
+  throw err;
+});
+Object.entries(PREFS).forEach(([p, conf]) => conf.munis.forEach(d => d.pref = p));
+const ALL = '1都3県すべて';
+const TAG_LABELS = {sango:'産後ケア', byoji:'病児保育', ichiji:'一時預かり', helper:'家事・育児ヘルパー', sitter:'ベビーシッター補助', ido:'送迎・移動支援', goods:'おむつ・育児用品の支給', jutaku:'住宅支援'};
+const STAGE_LABELS = {birth:'妊娠〜出生', pre:'未就学', school:'小中高'};
+const MAX_KIDS = 10;
+const state = { view:'main', showAll:false, q:'', pref:'1都3県すべて', kids:[{age:-1}], care:'ninka', single:false, twins:false, careNeeds:false, cmpPref:'東京都', sort:'name', compare:[], openDetail:new Set() };
+
+const ALL_MUNIS = Object.values(PREFS).flatMap(c => c.munis);
+function findMuni(name){ return ALL_MUNIS.find(d => d.name === name); }
+function currentMunis(){ return state.pref === ALL ? ALL_MUNIS : PREFS[state.pref].munis; }
+function prefTagOf(p){ return p === '東京都' ? '都' : '県'; }
+function confOf(d){ return PREFS[d.pref]; }
+function man(v){ const m = v / 10000; return (m % 1 === 0 ? m.toLocaleString() : m.toLocaleString(undefined, {maximumFractionDigits:1})) + '万円'; }
+function manS(v){ return v > 0 ? man(v) : '—'; }
+function esc(s){ return String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function taikiText(n, nl){ return n == null ? (nl || '不明') : n + '人'; }
+function gakudoTextFor(d){ return taikiText(d.gakudo, confOf(d).gakudoNullLabel); }
+
+// ---- ステージ別計算（円）。stages: birth=妊娠〜出生 / pre=未就学0〜5歳 / school=6〜18歳 ----
+function calcStages(d, kids){
+  const isTokyo = d.pref === '東京都';
+  const ages = kids.map(k => k.age).sort((x, y) => y - x);
+  const S = { birth:{c:0, m:0, lines:[]}, pre:{c:0, m:0, lines:[]}, school:{c:0, m:0, lines:[]} };
+  const addC = (st, l, v) => { S[st].c += v; S[st].lines.push([l, v, 'c']); };
+  const addM = (st, l, v) => { S[st].m += v; S[st].lines.push([l, v, 'm']); };
+  ages.forEach((age, idx) => {
+    const aEff = Math.max(age, 0);
+    // 妊娠〜出生
+    if(age === -1){
+      addC('birth', '妊婦のための支援給付（国）', 100000);
+      addC('birth', '出産育児一時金（国）', 500000);
+      if(isTokyo) addC('birth', '赤ちゃんファースト（都）', 130000);
+      (d.birth || []).forEach(b => { const v = b.amounts[Math.min(idx, 2)]; if(v > 0) addM('birth', b.label, v); });
+    }
+    // 児童手当: 1年ごとに第3子以降を再判定（22歳未満のきょうだいのうち3番目以降なら月3万円）
+    if(age < 18){
+      let teatePre = 0, teateSchool = 0;
+      for(let t = 0; t < 18; t++){
+        const ageT = aEff + t;
+        if(ageT >= 18) break;
+        const elders = ages.filter((a2, j) => j < idx && Math.max(a2, 0) + t < 22).length;
+        const rate = elders >= 2 ? 30000 : (ageT < 3 ? 15000 : 10000);
+        if(ageT < 6) teatePre += rate * 12; else teateSchool += rate * 12;
+      }
+      if(teatePre > 0) addC('pre', '児童手当（国・未就学の期間）', teatePre);
+      if(teateSchool > 0) addC('school', '児童手当（国・小中高の期間）', teateSchool);
+    }
+    // 自治体独自の月額給付（tsuki: from歳以上to歳未満に月額支給）
+    if(age < 18){
+      (d.tsuki || []).forEach(ts => {
+        const from = Math.max(aEff, ts.from ?? 0), to = Math.min(ts.to ?? 18, 18);
+        const preY = Math.max(0, Math.min(to, 6) - from);
+        const schY = Math.max(0, to - Math.max(from, 6));
+        if(preY > 0) addM('pre', `${ts.label}（月${ts.monthly.toLocaleString()}円×${preY}年分）`, ts.monthly * 12 * preY);
+        if(schY > 0) addM('school', `${ts.label}（月${ts.monthly.toLocaleString()}円×${schY}年分）`, ts.monthly * 12 * schY);
+      });
+    }
+    // 未就学（0〜5歳）
+    if(age < 18 && aEff < 6){
+      if(isTokyo) addC('pre', `018サポート（都・${6 - aEff}年分）`, (6 - aEff) * 60000);
+      (d.bday || []).forEach(b => { if(b.age < 6 && age < b.age){ const v = b.amounts[Math.min(idx, 2)]; if(v > 0) addM('pre', b.label, v); } });
+      if(state.care === 'ninkagai' && d.ninshoMax && aEff < 3){
+        const months = (age === -1 ? 36 : (3 - aEff) * 12);
+        addM('pre', `認可外保育の補助（上限${d.ninshoMax / 10000}万円/月×${months}か月）`, d.ninshoMax * months);
+      }
+      if(state.care === 'ninka' && aEff < 3){
+        const rule = d.hoikuMusho;
+        const ok = rule === 'first' || (rule === 'second' && idx >= 1) || (rule === 'third' && idx >= 2);
+        if(ok){
+          const months = (age === -1 ? 36 : (3 - aEff) * 12);
+          const v = 30000 * months;
+          const label = `0〜2歳の保育料無償化（平均3万円/月×${months}か月で換算）`;
+          if(isTokyo) addC('pre', label + '（都制度・第1子から）', v);
+          else addM('pre', label, v);
+        }
+      }
+    }
+    // 小中高（6〜18歳）
+    if(age < 18){
+      const from = Math.max(aEff, 6);
+      if(isTokyo && 18 - from > 0) addC('school', `018サポート（都・${18 - from}年分）`, (18 - from) * 60000);
+      (d.bday || []).forEach(b => { if(b.age >= 6 && age < b.age){ const v = b.amounts[Math.min(idx, 2)]; if(v > 0) addM('school', b.label, v); } });
+      if(aEff < 15){
+        const yrs = Math.min(15 - aEff, 3);
+        const c = d.chuKyushoku;
+        if(c === 'all' || (c === 'third' && idx >= 2) || (c === 'second' && idx >= 1)) addM('school', `中学校給食費 無償（残り${yrs}年分・月5,000円で概算）`, yrs * 60000);
+      }
+    }
+  });
+  const merge = st => { const out = []; S[st].lines.forEach(([l, v, t]) => { const hit = out.find(x => x[0] === l && x[2] === t); if(hit){ hit[1] += v; hit[3]++; } else out.push([l, v, t, 1]); }); S[st].lines = out.map(([l, v, t, n]) => [n > 1 ? `${l} ×${n}人` : l, v, t]); };
+  ['birth', 'pre', 'school'].forEach(merge);
+  const stage = st => S[st].c + S[st].m;
+  return { S, birth: stage('birth'), pre: stage('pre'), school: stage('school'),
+    total: stage('birth') + stage('pre') + stage('school'),
+    muni: S.birth.m + S.pre.m + S.school.m };
+}
+
+// ---- UI ----
+function renderPrefTabs(){
+  const el = document.getElementById('prefTabs');
+  const tabs = [ALL, ...Object.keys(PREFS)];
+  const cnt = p => p === ALL ? Object.values(PREFS).reduce((s, c) => s + c.munis.length, 0) : PREFS[p].munis.length;
+  el.innerHTML = tabs.map(p => `<button role="tab" aria-selected="${state.pref === p}" class="${state.pref === p ? 'on' : ''}" data-pref="${p}">${p}<span class="n">${cnt(p)}</span></button>`).join('');
+  el.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    state.pref = b.dataset.pref; state.openDetail.clear(); renderAll();
+  }));
+}
+function renderConds(){
+  const el = document.getElementById('kids');
+  const opts = ['<option value="-1">妊娠中</option>'].concat(Array.from({length: 22}, (_, i) => `<option value="${i}">${i}歳</option>`)).join('');
+  el.innerHTML = state.kids.map((k, i) => `
+    <span class="kid"><label>第${i + 1}子</label>
+      <select data-kid="${i}" aria-label="第${i + 1}子の年齢">${opts}</select>
+      ${state.kids.length > 1 ? `<button data-del="${i}" aria-label="第${i + 1}子を削除">✕</button>` : ''}
+    </span>`).join('') + `<button class="addkid" id="addKid" ${state.kids.length >= MAX_KIDS ? 'disabled' : ''}>＋ 追加</button>`;
+  el.querySelectorAll('select').forEach((s, i) => {
+    s.value = String(state.kids[i].age);
+    s.addEventListener('change', () => { state.kids[i].age = +s.value; renderAll(); });
+  });
+  el.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', () => { state.kids.splice(+b.dataset.del, 1); renderAll(); }));
+  const add = document.getElementById('addKid');
+  if(add) add.addEventListener('click', () => { state.kids.push({age:-1}); renderAll(); });
+
+  const cs = document.getElementById('careSel');
+  cs.value = state.care;
+  cs.onchange = () => { state.care = cs.value; renderAll(); };
+  [['optSingle', 'single'], ['optTwins', 'twins'], ['optCare', 'careNeeds']].forEach(([id, key]) => {
+    const cb = document.getElementById(id);
+    cb.checked = state[key];
+    cb.onchange = () => { state[key] = cb.checked; renderAll(); };
+  });
+}
+function renderCmpPicker(){
+  const picked = document.getElementById('cmpPicked');
+  picked.innerHTML = state.compare.map(n => {
+    const d = findMuni(n);
+    return `<span class="pchip">${esc(n)}<span style="font-weight:400;font-size:10.5px">${d ? esc(d.pref) : ''}</span><button data-rm="${esc(n)}" aria-label="${esc(n)}を外す">✕</button></span>`;
+  }).join('') + (state.compare.length === 1 ? '<span class="hint">あと1つえらぶと、くらべられます！</span>' : '');
+  picked.querySelectorAll('[data-rm]').forEach(b => b.addEventListener('click', () => {
+    state.compare = state.compare.filter(x => x !== b.dataset.rm); renderAll();
+  }));
+  // 比較ボタンはカード一覧の下に表示
+  const wrap = document.getElementById('cmpGoWrap');
+  wrap.innerHTML = state.compare.length >= 2 ? `<button class="gobtn" id="cmpGo">比較表でみてみる →</button>` : '';
+  const go = document.getElementById('cmpGo');
+  if(go) go.addEventListener('click', openCompare);
+}
+function kuniItems(){
+  const items = [['児童手当（0〜2歳 月1.5万・3歳〜高校生 月1万・第3子以降 月3万）', null], ['妊婦のための支援給付＋出産育児一時金', null], ['3〜5歳の保育料無償化', null], ['小学校給食費の負担軽減（2026年4月〜・月5,200円基準。超過分の扱いは自治体による）', null], ['高校授業料 実質無償（公立・私立とも。私立は上限45.7万円/年・所得制限なし）', null]];
+  if(state.single) items.push(['児童扶養手当・ひとり親医療費助成（ひとり親世帯）', null]);
+  if(state.careNeeds) items.push(['特別児童扶養手当・障害児福祉手当（該当する場合）', null]);
+  return items;
+}
+function renderCommon(){
+  const box = (title, cls, tagText, items) => `
+    <div class="common-box">
+      <h3><span class="layer-tag ${cls}">${tagText}</span>${title}</h3>
+      <ul>${items.map(([l, v]) => `<li><span>${esc(l)}</span><span class="amt">${v == null ? '' : man(v)}</span></li>`).join('')}</ul>
+    </div>`;
+  if(state.pref === ALL){
+    document.getElementById('commonTitle').textContent = 'どこに住んでも共通の制度と、都県で変わる制度';
+    const prefLines = Object.keys(PREFS).map(p => [`【${p}】` + PREFS[p].prefItems.map(i => i[0]).join('／'), null]);
+    document.getElementById('commonGrid').innerHTML =
+      box('国の制度（全国共通）', 'kuni', '国', kuniItems()) +
+      box('都県ごとの制度（住む都県で変わる）', 'to', '都県', prefLines);
+    return;
+  }
+  document.getElementById('commonTitle').textContent = `${state.pref}内ならどこでも共通の制度`;
+  document.getElementById('commonGrid').innerHTML =
+    box('国の制度（全国共通）', 'kuni', '国', kuniItems()) +
+    box(`${state.pref}の制度`, 'to', prefTagOf(state.pref), PREFS[state.pref].prefItems.map(i => [i[0], null]));
+}
+function renderBrowse(){
+  const el = document.getElementById('browseList');
+  if(!el) return;
+  const q = state.q.trim();
+  const src = q ? ALL_MUNIS.filter(d => d.name.includes(q)) : currentMunis();
+  let html = '', cur = '';
+  src.forEach(d => {
+    if(d.pref !== cur){ cur = d.pref; html += `<div class="mgroup">${esc(cur)}</div>`; }
+    const on = state.compare.includes(d.name);
+    html += `<button class="mrow ${on ? 'on' : ''}" data-madd="${esc(d.name)}">
+      <b>${esc(d.name)}</b><span class="msub">${esc(d.area || '')}</span>
+      <span class="mact">${on ? '追加済み ✓' : '＋ 追加'}</span>
+    </button>`;
+  });
+  el.innerHTML = html || '<p class="emptyhint" style="padding:14px">該当する自治体が見つかりません</p>';
+  el.querySelectorAll('[data-madd]').forEach(b => b.addEventListener('click', () => {
+    const n = b.dataset.madd;
+    if(state.compare.includes(n)) state.compare = state.compare.filter(x => x !== n);
+    else { if(state.compare.length >= 3) return; state.compare.push(n); }
+    renderAll();
+  }));
+}
+function setVis(showFull, hasList){
+  const V = (sel, show) => { const el = document.querySelector(sel); if(el) el.style.display = show ? '' : 'none'; };
+  V('.sortrow', showFull);
+  V('.resultnote', hasList);
+  const sa = document.getElementById('showAllBtn');
+  sa.textContent = state.showAll ? '↑ 選択した自治体だけ表示にもどす' : `すべての自治体を一覧で見る（${currentMunis().length}件）`;
+}
+
+function renderAll(){
+  renderPrefTabs(); renderConds(); renderCommon(); renderCmpPicker(); renderBrowse();
+  document.getElementById('sortSel').value = state.sort;
+  const munisAll = currentMunis();
+  const showFull = state.showAll;
+
+  let items;
+  if(showFull){
+    items = munisAll.map(d => ({ d, s: calcStages(d, state.kids) }));
+    const sorters = {
+      total: (a, b) => b.s.total - a.s.total,
+      taiki: (a, b) => (a.d.hoiku ?? 999) - (b.d.hoiku ?? 999),
+      name: () => 0,
+    };
+    if(state.sort !== 'name') items.sort(sorters[state.sort]);
+  } else {
+    items = state.compare.map(n => findMuni(n)).filter(Boolean).map(d => ({ d, s: calcStages(d, state.kids) }));
+  }
+  setVis(showFull, items.length > 0);
+  document.getElementById('countNote').textContent = `${items.length}自治体を表示`;
+
+  document.getElementById('list').innerHTML = items.map(x => {
+    const d = x.d, s = x.s, open = state.openDetail.has(d.name);
+    const sub = (state.pref === ALL || !showFull) ? d.pref + (d.area ? '・' + d.area : '') : d.area;
+    const tagHtml = d.tags.length
+      ? d.tags.filter(t => TAG_LABELS[t]).map(t => `<span class="tagchip">${TAG_LABELS[t]}</span>`).join('')
+      : '';
+    return `
+    <article class="card" data-name="${esc(d.name)}">
+      <div class="card-head">
+        <span class="jichitai">${esc(d.name)}</span>
+        ${sub ? `<span class="sub">${esc(sub)}</span>` : ''}
+        ${d.url ? `<a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener">公式 ↗</a>` : ''}
+      </div>
+      <div class="stages" role="group" aria-label="ステージ別の受給見込み">
+        <div class="st"><i class="ico">🍼</i><span>妊娠〜出生</span><b data-val="${s.birth}">${manS(s.birth)}</b></div>
+        <div class="st"><i class="ico">🧸</i><span>未就学</span><b data-val="${s.pre}">${manS(s.pre)}</b></div>
+        <div class="st"><i class="ico">🎒</i><span>小中高</span><b data-val="${s.school}">${manS(s.school)}</b></div>
+        <div class="st total"><i class="ico">🎉</i><span>合計</span><b data-val="${s.total}">${manS(s.total)}</b></div>
+      </div>
+      <div class="own-note">合計はこの条件で受けられる概算<a class="refmark" href="#notes">注2</a>。うち自治体独自の給付・補助 <b>${man(s.muni)}</b>（★印の項目・詳細で確認できます）</div>
+      <div class="info-chips">
+        <span class="ichip">医療費 <b>${esc(d.iryoChip)}</b></span>
+        <span class="ichip">給食 <b>${esc(d.kyushokuChip)}</b></span>
+        <span class="ichip ${d.hoiku === 0 ? 'good' : (d.hoiku >= 100 ? 'bad' : '')}">保育待機 <b>${taikiText(d.hoiku)}</b></span>
+      </div>
+      <div class="tagchips">${tagHtml}</div>
+      <div class="card-actions">
+        <button class="morebtn" data-detail="${esc(d.name)}">${open ? '閉じる' : '詳しく見る'}</button>
+        <label class="cmp"><input type="checkbox" data-cmp="${esc(d.name)}" ${state.compare.includes(d.name) ? 'checked' : ''}>比較</label>
+      </div>
+      <div class="detail ${open ? 'open' : ''}">${open ? detailHtml(d, s) : ''}</div>
+    </article>`;
+  }).join('') || `<p class="emptyhint">気になるまちを上の一覧からえらんでみましょう！ ここに詳細カードが出て、2つえらぶと比較表がつくれます。</p>`;
+
+  document.querySelectorAll('[data-detail]').forEach(b => b.addEventListener('click', () => {
+    const n = b.dataset.detail;
+    state.openDetail.has(n) ? state.openDetail.delete(n) : state.openDetail.add(n);
+    renderAll();
+  }));
+  document.querySelectorAll('[data-cmp]').forEach(cb => cb.addEventListener('change', () => {
+    const n = cb.dataset.cmp;
+    if(cb.checked){ if(state.compare.length >= 3){ cb.checked = false; return; } state.compare.push(n); }
+    else state.compare = state.compare.filter(x => x !== n);
+    renderAll();
+  }));
+  renderCmpBar();
+  animateCards();
+}
+
+function spawnConfetti(box){
+  const colors = ['#F08168', '#2E86C1', '#39A17C', '#F0B429'];
+  for(let i = 0; i < 6; i++){
+    const p = document.createElement('span');
+    p.className = 'cf';
+    p.style.left = (30 + Math.random() * 40) + '%';
+    p.style.background = colors[i % colors.length];
+    p.style.setProperty('--cfx', (Math.random() * 56 - 28) + 'px');
+    p.style.setProperty('--cfr', (Math.random() * 240 - 120) + 'deg');
+    p.style.animationDelay = (Math.random() * 0.12) + 's';
+    box.appendChild(p);
+    setTimeout(() => p.remove(), 1100);
+  }
+}
+const _seenCards = new Set();
+function animateCards(){
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches || document.hidden;
+  let newIdx = 0;
+  document.querySelectorAll('#list .card').forEach(card => {
+    const name = card.dataset.name;
+    if(_seenCards.has(name)) return;
+    _seenCards.add(name);
+    if(still) return;
+    card.classList.add('reveal');
+    card.style.animationDelay = (newIdx * 70) + 'ms';
+    const delay = newIdx * 70;
+    newIdx++;
+    card.querySelectorAll('.st b[data-val]').forEach(el => {
+      const target = +el.dataset.val;
+      const final = el.textContent;
+      if(!target){ return; }
+      el.textContent = man(0);
+      const dur = 750;
+      let t0 = null;
+      const tick = now => {
+        if(t0 === null) t0 = now;
+        const p = Math.min((now - t0 - delay) / dur, 1);
+        if(p < 0){ requestAnimationFrame(tick); return; }
+        const e = 1 - Math.pow(1 - p, 3);
+        el.textContent = man(target * e);
+        if(p < 1){ requestAnimationFrame(tick); return; }
+        el.textContent = final;
+        const st = el.closest('.st');
+        if(st && st.classList.contains('total')){
+          st.classList.add('joypop');
+          st.addEventListener('animationend', () => st.classList.remove('joypop'), { once: true });
+          spawnConfetti(st);
+        }
+      };
+      requestAnimationFrame(tick);
+    });
+  });
+}
+
+function stageCalcHtml(s){
+  const block = st => s.S[st].lines.length
+    ? `<div class="sg">${STAGE_LABELS[st]}　${man(s.S[st].c + s.S[st].m)}</div>` +
+      s.S[st].lines.map(([l, v, t]) => `<div class="ln"><span>${t === 'm' ? '★' : ''}${esc(l)}</span><span class="a">${man(v)}</span></div>`).join('')
+    : '';
+  return `<div class="stagecalc">${block('birth')}${block('pre')}${block('school')}
+    <div class="sg">合計　${man(s.total)}（★=自治体独自 計${man(s.muni)}）</div></div>`;
+}
+function benefitsText(d){
+  const rows = [];
+  (d.birth || []).forEach(b => rows.push(`【妊娠・出産時】${b.label}　${amtText(b.amounts)}`));
+  (d.bday || []).forEach(b => rows.push(`【${b.age}歳】${b.label}　${amtText(b.amounts)}`));
+  (d.tsuki || []).forEach(ts => rows.push(`【${ts.from}〜${ts.to - 1}歳】${ts.label}　月${ts.monthly.toLocaleString()}円`));
+  return rows.join('\n') || '独自の現金・商品券給付はなし';
+}
+function amtText(a){ return (a[0] === a[1] && a[1] === a[2]) ? man(a[0]) : `第1子${man(a[0])}・第2子${man(a[1])}・第3子以降${man(a[2])}`; }
+// 「、」区切りのテキストを1項目1行に（括弧内の「、」では改行しない）
+function listify(s){
+  if(!s) return '';
+  const out = []; let depth = 0, cur = '';
+  for(const ch of String(s)){
+    if(ch === '（') depth++;
+    else if(ch === '）') depth = Math.max(0, depth - 1);
+    if(ch === '、' && depth === 0){ if(cur) out.push(cur); cur = ''; }
+    else cur += ch;
+  }
+  if(cur) out.push(cur);
+  return out.join('\n');
+}
+function bsNote(d){
+  if(!d.bs) return d.pref === '東京都' ? 'この自治体では未実施' : '—（都事業）';
+  let note = d.bs;
+  if(state.single || state.twins || state.careNeeds){
+    const parts = [];
+    if(state.single) parts.push('ひとり親世帯は年288時間まで');
+    if(state.twins) parts.push('多胎児は年288時間まで');
+    if(state.careNeeds) parts.push('障害児は対象年齢が拡大される場合あり（例: 小6まで）');
+    note += '\n※ご家族の条件では: ' + parts.join('／');
+  }
+  return note;
+}
+function detailHtml(d, s){
+  const conf = confOf(d), tag = prefTagOf(d.pref), isTokyo = d.pref === '東京都';
+  const officialLink = d.url ? `<a class="official" href="${esc(d.url)}" target="_blank" rel="noopener">公式サイトで制度を確認 →</a>` : '';
+  const yochien = state.care === 'yochien' && isTokyo ? `<div><dt>私立幼稚園の保護者補助（幼稚園予定のため表示）</dt><dd>${esc(d.yochien || '—')}</dd></div>` : (isTokyo ? `<div><dt>私立幼稚園の保護者補助（無償化給付とは別）</dt><dd>${esc(d.yochien || '—')}</dd></div>` : '');
+  const muniBody = isTokyo ? `
+    <dl>
+      <div><dt>独自の現金・商品券給付</dt><dd>${esc(benefitsText(d))}</dd></div>
+      <div><dt>子ども医療費助成</dt><dd>${esc(d.iryo)}</dd></div>
+      <div><dt>学校給食費</dt><dd>${esc(d.kyushoku)}</dd></div>
+      <div><dt>認証保育所などの保育料補助</dt><dd>${esc(d.ninsho || '—')}</dd></div>
+      ${yochien}
+      <div><dt>ベビーシッター利用支援（都事業）</dt><dd>${esc(bsNote(d))}</dd></div>
+      <div><dt>そのほか注目の支援</dt><dd>${esc(d.sonota || '—')}</dd></div>
+      <div><dt>待機児童</dt><dd>保育所 ${taikiText(d.hoiku)}／放課後児童クラブ ${gakudoTextFor(d)}</dd></div>
+    </dl>` : `
+    <dl>
+      <div><dt>独自の現金・商品券給付</dt><dd>${esc(benefitsText(d))}</dd></div>
+      <div><dt>子ども医療費助成</dt><dd>${esc(d.iryo)}</dd></div>
+      <div><dt>学校給食費</dt><dd>${esc(d.kyushoku)}</dd></div>
+      <div><dt>そのほか注目の支援</dt><dd>${esc(d.sonota || '—')}</dd></div>
+      <div><dt>待機児童</dt><dd>保育所 ${taikiText(d.hoiku)}／放課後児童クラブ ${gakudoTextFor(d)}</dd></div>
+    </dl>`;
+  return `
+    <h4>ステージ別の内訳（この条件）</h4>
+    ${stageCalcHtml(s)}
+    <p class="calcnote-mini">★＝${esc(d.name)}独自の給付・補助。金額は概算で、世帯所得・保育の利用状況・申請/居住要件により実際と異なります（<a class="refmark" href="#notes" style="margin:0">注1〜3</a>）。保育料無償化・高校授業料の扱いは注3をご覧ください。</p>
+    <h4><span class="layer-tag shi">自治体</span>${esc(d.name)}の制度</h4>
+    ${muniBody}
+    <h4><span class="layer-tag to">${tag}</span>${esc(d.pref)}の制度（${tag}内共通）</h4>
+    <div class="common-note">${esc(conf.prefItems.map(i => i[0]).join('／'))}
+${esc(conf.prefServices)}</div>
+    <h4><span class="layer-tag kuni">国</span>全国共通の制度</h4>
+    <div class="common-note">${kuniItems().map(i => esc(i[0])).join('\n')}</div>
+    ${officialLink}
+    ${(d.refs || []).length ? `<details class="refs"><summary>制度別の出典（${d.refs.length}件）</summary><ul>${d.refs.map(r => `<li><a href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.label)}</a></li>`).join('')}</ul></details>` : ''}
+    ${d.checked ? `<p class="calcnote-mini">情報確認日: ${esc(d.checked)}（各自治体公式サイトによる）</p>` : ''}`;
+}
+
+function renderCmpBar(){
+  const bar = document.getElementById('cmpBar');
+  const n = state.compare.length;
+  bar.classList.toggle('show', n >= 1);
+  const dots = `<span class="cmpdots" aria-hidden="true">${[0, 1, 2].map(i => `<i class="${i < n ? 'on' : ''}"></i>`).join('')}</span>`;
+  document.getElementById('cmpLabel').innerHTML = dots + esc(state.compare.join('・')) + (n === 1 ? '　あと1つでくらべられます！' : '');
+  document.getElementById('cmpOpen').style.display = n >= 2 ? '' : 'none';
+  // 2つ揃った瞬間だけ「押しどき」の合図
+  if(n >= 2 && _prevCmpCount < 2){
+    ['cmpOpen', 'cmpGo'].forEach(id => {
+      const b = document.getElementById(id);
+      if(b){ b.classList.add('pulse'); b.addEventListener('animationend', () => b.classList.remove('pulse'), { once: true }); }
+    });
+  }
+  _prevCmpCount = n;
+}
+let _prevCmpCount = 0;
+function openCompare(){
+  const ds = state.compare.map(n => findMuni(n)).filter(Boolean);
+  const anyTokyo = ds.some(d => d.pref === '東京都');
+  const ss = ds.map(d => calcStages(d, state.kids));
+  const row = (label, fn, cls) => `<tr><td>${label}</td>${ds.map((d, i) => `<td class="${cls || ''}">${fn(d, ss[i])}</td>`).join('')}</tr>`;
+  const section = label => `<tr class="section"><td colspan="${ds.length + 1}"><span class="seclabel">${label}</span></td></tr>`;
+  const moneyRow = (label, vals, extra, rowClass) =>
+    `<tr class="${rowClass || ''}"><td>${label}</td>${vals.map((v, i) => `<td><span class="yen">${manS(v)}</span>${extra ? `<span class="sub2">${extra(i)}</span>` : ''}</td>`).join('')}</tr>`;
+  const minRow = (label, nums, texts) => `<tr><td>${label}</td>${texts.map(t => `<td>${t}</td>`).join('')}</tr>`;
+  const tokyoRows = anyTokyo ? `
+    ${row('認証保育所などの補助', d => d.pref === '東京都' ? esc(d.ninsho || '—') : '—（都内のみ収録）', 'longtext')}
+    ${row('私立幼稚園の保護者補助', d => d.pref === '東京都' ? esc(d.yochien || '—') : '—（都内のみ収録）', 'longtext')}
+    ${row('ベビーシッター利用支援（都事業）', d => d.pref === '東京都' ? esc(d.bs || '未実施') : '—（都事業）', 'longtext')}` : '';
+  document.getElementById('cmpBody').innerHTML = `
+    <div class="cmphint">👉 表は横にスクロールできます（項目名は固定のまま）</div>
+    <table class="cmp">
+      <thead><tr><th></th>${ds.map(d => `<th>${esc(d.name)}<span class="pn">${esc(d.pref)}</span></th>`).join('')}</tr></thead>
+      <tbody>
+        ${section('ステージ別の受給見込み（この条件・概算）')}
+        ${moneyRow('妊娠〜出生', ss.map(s => s.birth))}
+        ${moneyRow('未就学（0〜5歳）', ss.map(s => s.pre))}
+        ${moneyRow('小中高（6〜18歳）', ss.map(s => s.school))}
+        ${moneyRow('合計', ss.map(s => s.total), i => `うち自治体独自 ${man(ss[i].muni)}`, 'rtotal')}
+        ${section('制度の違い')}
+        ${row('都県の制度', d => `【${esc(d.pref)}】\n` + esc(PREFS[d.pref].prefItems.map(i => i[0]).join('\n')), 'longtext')}
+        ${row('そのほかの制度', d => { const ts = d.tags.filter(t => TAG_LABELS[t]); return ts.length ? ts.map(t => TAG_LABELS[t]).join('\n') : '—'; })}
+        ${row('子ども医療費助成', d => esc(d.iryo).replace(/。(?=.)/g, '。\n'), 'longtext')}
+        ${row('学校給食費', d => esc(d.kyushoku).replace(/／/g, '\n'), 'longtext')}
+        ${row('独自給付（制度一覧）', d => esc(benefitsText(d)), 'longtext')}
+        ${row('そのほか注目の支援', d => d.sonota ? esc(listify(d.sonota)) : '—', 'longtext')}
+        ${tokyoRows}
+        ${section('保育・預け先')}
+        ${minRow('保育所待機児童', ds.map(d => d.hoiku), ds.map(d => taikiText(d.hoiku)))}
+        ${row('放課後児童クラブ待機児童', d => gakudoTextFor(d))}
+        ${row('公式サイト', d => d.url ? `<a href="${esc(d.url)}" target="_blank" rel="noopener" style="color:var(--accent)">子育て支援ページ →</a>` : '—')}
+      </tbody>
+    </table>`;
+  openModal(document.getElementById('overlay'), '#cmpClose');
+}
+
+// ---- オンボーディング・カルーセル ----
+const ONB_SLIDES = [
+  { img: 'img/onb-1.jpg', alt: 'ようこそ。子育てを、もっと安心に。支援制度の情報を、わかりやすく、あなたのそばに。必要な情報が、子育ての不安をやさしく減らします。' },
+  { img: 'img/onb-2.jpg', alt: 'こんな方におすすめです。首都圏（1都3県）で子育て中のパパママ、これから首都圏で子育てを始める予定の方（プレパパ・プレママ含む）、引越しを検討中で子育て環境を重視している方、子育て支援制度について情報収集している方、育児休暇中の過ごし方や今後の働き方を検討している方。' },
+  { img: 'img/onb-3.jpg', alt: 'こんな風に活用してください。住んでいる自治体のチェック、引越し先の検討材料に、他のパパママとの情報共有に、出産・育児準備の情報収集に、育児休暇中の情報収集に。知ることが、子育ての安心につながります。' },
+  { img: 'img/onb-4.jpg', alt: 'ありがとうございます。一緒に、よりよい子育てを。情報の充実が安心につながります。間違いや不足があればぜひお知らせください。役に立ったらシェアをお願いします。みなさまの声が、より良いサービスになります。' },
+];
+let onbIdx = 0;
+function renderOnb(){
+  const sl = ONB_SLIDES[onbIdx];
+  document.getElementById('onbBody').innerHTML = `<img class="onbimg" src="${sl.img}" alt="${esc(sl.alt)}">` +
+    (onbIdx === ONB_SLIDES.length - 1 ? `<p class="onb-by">作成者: <a href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener">ゆか⌇都心に住みたい子育て世帯のおうち探し</a></p>` : '');
+  document.getElementById('onbDots').innerHTML = ONB_SLIDES.map((_, i) => `<i class="${i === onbIdx ? 'on' : ''}" data-dot="${i}"></i>`).join('');
+  document.querySelectorAll('#onbDots i').forEach(d => d.addEventListener('click', () => { onbIdx = +d.dataset.dot; renderOnb(); }));
+  document.getElementById('onbPrev').disabled = onbIdx === 0;
+  document.getElementById('onbNext').textContent = onbIdx === ONB_SLIDES.length - 1 ? 'はじめる' : '次へ';
+  document.querySelector('#onbOv .onbbody').scrollTop = 0;
+}
+// ---- モーダル共通: フォーカス移動・トラップ・Esc ----
+let _lastFocus = null;
+function openModal(el, focusSel){
+  _lastFocus = document.activeElement;
+  el.classList.add('show');
+  const f = el.querySelector(focusSel);
+  if(f) f.focus();
+}
+function closeModal(el){
+  el.classList.remove('show');
+  if(_lastFocus && document.contains(_lastFocus)) _lastFocus.focus();
+  _lastFocus = null;
+}
+function closeCompare(){ closeModal(document.getElementById('overlay')); }
+document.addEventListener('keydown', e => {
+  const open = ['onbOv', 'overlay'].map(id => document.getElementById(id)).find(x => x && x.classList.contains('show'));
+  if(!open) return;
+  if(e.key === 'Escape'){ e.preventDefault(); open.id === 'onbOv' ? closeOnb() : closeCompare(); return; }
+  if(e.key === 'Tab'){
+    const f = [...open.querySelectorAll('button, a[href], input, select, [tabindex]:not([tabindex="-1"])')].filter(x => !x.disabled && x.offsetParent !== null);
+    if(!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if(e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+});
+
+function openOnb(){ onbIdx = 0; renderOnb(); openModal(document.getElementById('onbOv'), '#onbNext'); }
+function closeOnb(){
+  closeModal(document.getElementById('onbOv'));
+  try{ localStorage.setItem('kosodate_onb_seen', '1'); }catch(e){}
+}
+document.getElementById('onbNext').addEventListener('click', () => {
+  if(onbIdx >= ONB_SLIDES.length - 1) closeOnb();
+  else { onbIdx++; renderOnb(); }
+});
+document.getElementById('onbPrev').addEventListener('click', () => { if(onbIdx > 0){ onbIdx--; renderOnb(); } });
+document.getElementById('onbClose').addEventListener('click', closeOnb);
+document.getElementById('onbOv').addEventListener('click', e => { if(e.target.id === 'onbOv') closeOnb(); });
+document.getElementById('onbOpenBtn').addEventListener('click', openOnb);
+try{ if(!localStorage.getItem('kosodate_onb_seen')) openOnb(); }catch(e){ openOnb(); }
+
+document.getElementById('showAllBtn').addEventListener('click', () => { state.showAll = !state.showAll; renderAll(); });
+document.getElementById('muniSearch').addEventListener('input', e => { state.q = e.target.value; renderBrowse(); });
+document.getElementById('sortSel').addEventListener('change', e => { state.sort = e.target.value; renderAll(); });
+document.getElementById('cmpOpen').addEventListener('click', openCompare);
+document.getElementById('cmpClear').addEventListener('click', () => { state.compare = []; renderAll(); });
+document.getElementById('cmpClose').addEventListener('click', closeCompare);
+document.getElementById('overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closeCompare(); });
+
+renderAll();
+</script>
+</body>
+</html>

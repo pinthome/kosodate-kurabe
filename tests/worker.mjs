@@ -47,4 +47,54 @@ for (const host of ['localhost:8787', '127.0.0.1:8787']) {
   assert(res.status === 200 && calls.length === 1, `${host}: httpでもリダイレクトしない`);
 }
 
+// ---- /api/prefs: 同一オリジンのfetchのみ許可 ----
+const API = 'https://kosodate.pint-home.com/api/prefs';
+
+// Sec-Fetch-Site: same-origin → 200＋212自治体のJSON
+{
+  const { env, calls } = makeEnv();
+  const res = await worker.fetch(new Request(API, { headers: { 'sec-fetch-site': 'same-origin' } }), env);
+  assert(res.status === 200, `API: same-originで200（実際: ${res.status}）`);
+  const prefs = await res.json();
+  const total = Object.values(prefs).reduce((s, c) => s + c.munis.length, 0);
+  assert(total === 212, `API: 212自治体を返す（実際: ${total}）`);
+  assert(res.headers.get('cache-control') === 'private, max-age=3600', 'API: 共有キャッシュに載らないcache-control');
+  assert(calls.length === 0, 'API: Assetsに委譲しない');
+}
+
+// Sec-Fetch-Siteなし＋自サイトReferer → 200（旧ブラウザ向けフォールバック）
+{
+  const { env } = makeEnv();
+  const res = await worker.fetch(new Request(API, { headers: { referer: 'https://kosodate.pint-home.com/' } }), env);
+  assert(res.status === 200, `API: 自サイトRefererで200（実際: ${res.status}）`);
+}
+
+// ヘッダなし（curl等の直接アクセス） → 403
+{
+  const { env } = makeEnv();
+  const res = await worker.fetch(new Request(API), env);
+  assert(res.status === 403, `API: ヘッダなしは403（実際: ${res.status}）`);
+}
+
+// クロスサイト（他サイトからの埋め込み・直リンク） → 403
+{
+  const { env } = makeEnv();
+  const res = await worker.fetch(new Request(API, { headers: { 'sec-fetch-site': 'cross-site', referer: 'https://evil.example.com/' } }), env);
+  assert(res.status === 403, `API: クロスサイトは403（実際: ${res.status}）`);
+}
+
+// Refererの前方一致偽装（kosodate.pint-home.com.evil.com） → 403
+{
+  const { env } = makeEnv();
+  const res = await worker.fetch(new Request(API, { headers: { referer: 'https://kosodate.pint-home.com.evil.example.com/' } }), env);
+  assert(res.status === 403, `API: 類似ドメインRefererは403（実際: ${res.status}）`);
+}
+
+// DEV時はチェックなしで200（wrangler devでの動作確認用）
+{
+  const { env } = makeEnv('true');
+  const res = await worker.fetch(new Request('http://localhost:8787/api/prefs'), env);
+  assert(res.status === 200, `API: DEV時はRefererなしでも200（実際: ${res.status}）`);
+}
+
 process.exit(failed);
