@@ -1,6 +1,5 @@
 // スモークテスト: HTML構造・埋め込みデータ・計算ロジック・CSP整合を検証
 import { readFileSync } from 'node:fs';
-import { createHash } from 'node:crypto';
 
 const html = readFileSync(new URL('../public/index.html', import.meta.url), 'utf8');
 const headers = readFileSync(new URL('../public/_headers', import.meta.url), 'utf8');
@@ -22,7 +21,10 @@ if (m) {
   const names = Object.keys(prefs);
   assert(names.length === 4, '4都県が存在する');
   const total = Object.values(prefs).reduce((s, c) => s + c.munis.length, 0);
-  assert(total === 203, `203自治体（実際: ${total}）`);
+  assert(total === 212, `212自治体・島しょ部含む（実際: ${total}）`);
+  const islands = ['大島町', '利島村', '新島村', '神津島村', '三宅村', '御蔵島村', '八丈町', '青ヶ島村', '小笠原村'];
+  const tokyoNames = new Set(prefs['東京都'].munis.map(d => d.name));
+  assert(islands.every(n => tokyoNames.has(n)), '島しょ部9自治体が収録されている');
   for (const [pref, conf] of Object.entries(prefs)) {
     const bad = conf.munis.filter(d => !d.name || !d.iryoChip || !d.kyushokuChip || !Array.isArray(d.birth) || !Array.isArray(d.bday));
     assert(bad.length === 0, `${pref}: 全自治体に必須フィールドがある${bad.length ? '（欠落: ' + bad.map(d => d.name).join(',') + '）' : ''}`);
@@ -31,7 +33,7 @@ if (m) {
 
   // 医療費チップと詳細の既知の矛盾が再発していないこと
   const kyonan = all.find(d => d.name === '鋸南町');
-  assert(kyonan && !kyonan.iryoChip.startsWith('18歳'), '鋸南町のチップが中3までになっている');
+  assert(kyonan && /18歳|高/.test(kyonan.iryoChip), '鋸南町の医療費が高校生（18歳年度末）まで拡大済み');
   const noda = all.find(d => d.name === '野田市');
   assert(noda && noda.iryoChip.includes('500円'), '野田市のチップが基準日時点の500円/回になっている');
   const shibayama = all.find(d => d.name === '芝山町');
@@ -47,15 +49,11 @@ if (m) {
   assert(unbalanced.length === 0, `チップの括弧が閉じている${unbalanced.length ? '（違反: ' + unbalanced.map(d => d.name).join(',') + '）' : ''}`);
 }
 
-// ---- CSP: _headersのスクリプトハッシュが実際のインラインスクリプトと一致すること ----
+// ---- CSP: Cloudflare Web Analyticsのビーコン注入と干渉するためscript-srcを含めない（README運用メモ参照） ----
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
 assert(scripts.length === 1, 'インラインスクリプトが1つだけ');
-if (scripts.length === 1) {
-  const hash = 'sha256-' + createHash('sha256').update(scripts[0][1]).digest('base64');
-  assert(headers.includes(`script-src '${hash}'`), `CSPのスクリプトハッシュが一致する（期待: ${hash}）`);
-  assert(!/script-src[^;]*'unsafe-inline'/.test(headers), "CSPのscript-srcにunsafe-inlineがない");
-}
-assert(!/\son[a-z]+\s*=\s*["']/i.test(html.replace(/<script>[\s\S]*?<\/script>/, '')), 'インラインイベントハンドラがない（CSPハッシュ運用の前提）');
+assert(!/script-src/.test(headers), 'CSPにscript-srcがない（本番事故防止・README運用メモ参照）');
+assert(!/\son[a-z]+\s*=\s*["']/i.test(html.replace(/<script>[\s\S]*?<\/script>/, '')), 'インラインイベントハンドラがない');
 
 // ---- 多子世帯の入力上限: 第5子以降も入力できること ----
 const maxKids = html.match(/const MAX_KIDS = (\d+);/);
@@ -94,6 +92,15 @@ if (calcSrc) {
   // 第3子以降のみ無償の自治体では第1・2子に給食費が付かない
   r = calc(stub({ chuKyushoku: 'third' }), [{ age: 10 }, { age: 8 }, { age: 0 }]);
   assert(r.muni === 180_000, `中学給食費・第3子のみ無償: ${r.muni} === 180000`);
+
+  // 月額給付（tsuki）: from歳以上to歳未満に月額を計上（未就学/小中高に按分）
+  const tsukiMuni = stub({ tsuki: [{ label: 'クーポン', from: 0, to: 15, monthly: 5000 }] });
+  r = calc(tsukiMuni, [{ age: 0 }]);
+  assert(r.muni === 900_000, `月額給付・0歳で15年分: ${r.muni} === 900000`);
+  r = calc(tsukiMuni, [{ age: 13 }]);
+  assert(r.muni === 120_000, `月額給付・13歳で残り2年分: ${r.muni} === 120000`);
+  r = calc(stub({ tsuki: [{ label: '乳児用品', from: 0, to: 3, monthly: 5500 }] }), [{ age: -1 }]);
+  assert(r.muni === 198_000, `月額給付・妊娠中で3年分: ${r.muni} === 198000`);
 }
 
 process.exit(failed);
