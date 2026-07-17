@@ -3,4 +3,4 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: DENY
   Referrer-Policy: strict-origin-when-cross-origin
-  Content-Security-Policy: base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  Content-Security-Policy: img-src 'self' data:; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
