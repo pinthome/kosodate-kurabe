@@ -177,9 +177,13 @@ footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-varia
 @media (prefers-reduced-motion: no-preference){.card{transition:transform .18s ease, box-shadow .18s ease}}
 .card:hover{transform:translateY(-2px); box-shadow:0 8px 22px rgba(22,40,58,.09), 0 20px 44px rgba(22,40,58,.09)}
 .card-head{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap}
+/* スクロール中に現在カードの自治体名を画面上部に追従表示 */
+.muni-sticky{position:fixed; top:0; left:50%; transform:translate(-50%,-120%); z-index:24; background:var(--surface); box-shadow:var(--sh-md); border-radius:0 0 16px 16px; padding:10px 24px; font-size:14px; font-weight:700; color:var(--ink); display:flex; align-items:baseline; gap:8px; max-width:92vw; white-space:nowrap; overflow:hidden; transition:transform .18s ease}
+.muni-sticky.show{transform:translate(-50%,0)}
+.muni-sticky .sub{font-size:10.5px; color:var(--muted); font-weight:400}
 .jichitai{font-size:16px; font-weight:700}
 .card-head .sub{font-size:10.5px; color:var(--muted)}
-.card-head a.ext{margin-left:auto; color:var(--accent); font-size:11px; text-decoration:none; white-space:nowrap}
+.card-head label.cmp{align-self:center}
 .stages{display:grid; grid-template-columns:repeat(4,1fr); gap:6px; margin:12px 0 4px}
 .st{background:#F1F8FF; border-radius:16px; padding:9px 2px 9px; text-align:center}
 .st .ico{display:block; font-style:normal; font-size:15px; line-height:1.2}
@@ -209,7 +213,21 @@ footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-varia
 .ichip.bad b{color:var(--warn)}
 .tagchips{display:flex; flex-wrap:wrap; gap:5px}
 .tagchip{font-size:10.5px; border:1px solid var(--line); color:var(--muted); border-radius:999px; padding:1px 9px; white-space:nowrap}
-.card-actions{display:flex; gap:16px; margin-top:10px; align-items:center}
+.card-actions{display:flex; flex-direction:column; gap:10px; margin-top:12px; align-items:stretch}
+.card-actions .morebtn{width:100%; text-align:center; padding:12px 18px}
+/* 選択した自治体カードのカルーセル表示 */
+#list.carousel{display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x mandatory; padding:4px 4px 6px; margin:0 -4px; -webkit-overflow-scrolling:touch; scrollbar-width:none}
+#list.carousel::-webkit-scrollbar{display:none}
+#list.carousel .card{flex:0 0 84%; max-width:430px; scroll-snap-align:center; align-self:flex-start; margin-top:12px}
+@media (min-width:720px){#list.carousel .card{flex-basis:58%}}
+.carousel-nav{display:flex; align-items:center; justify-content:center; gap:14px; margin-top:10px}
+.carousel-nav:empty{display:none}
+.cnav{width:38px; height:38px; border-radius:50%; border:0; background:var(--surface); color:var(--accent); font:inherit; font-size:15px; font-weight:700; cursor:pointer; box-shadow:var(--sh-sm)}
+.cnav:hover{background:var(--accent-soft)}
+.cnav:disabled{opacity:.35; cursor:default}
+.cdots{display:flex; gap:6px}
+.cdots i{width:8px; height:8px; border-radius:50%; background:var(--line); transition:background .15s ease, transform .15s ease}
+.cdots i.on{background:var(--accent); transform:scale(1.25)}
 .linkbtn{border:0; background:none; color:var(--accent); font:inherit; font-size:12px; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:3px}
 .morebtn{border:0; background:var(--accent-soft); color:var(--accent); font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; border-radius:var(--r-pill); padding:8px 18px}
 .morebtn:hover{filter:brightness(.96)}
@@ -228,7 +246,13 @@ label.cmp input{accent-color:var(--accent)}
 .stagecalc .sg:first-child{margin-top:0}
 .stagecalc .ln{display:flex; justify-content:space-between; gap:10px; color:var(--muted)}
 .stagecalc .ln .a{font-variant-numeric:tabular-nums; white-space:nowrap}
-.detail .official{display:inline-block; margin-top:10px; border:0; color:var(--accent); background:var(--accent-soft); border-radius:var(--r-pill); padding:9px 18px; font-size:12px; font-weight:700; text-decoration:none}
+.detail .official{display:block; width:100%; box-sizing:border-box; text-align:center; margin-top:12px; border:0; color:var(--accent); background:var(--accent-soft); border-radius:var(--r-pill); padding:12px 18px; font-size:12.5px; font-weight:700; text-decoration:none}
+/* 制度別の出典: カード内の他要素（stagecalc等）とトーンを合わせる */
+.detail .refs{margin-top:10px; background:var(--ground); border-radius:12px; padding:11px 14px; font-size:12px}
+.detail .refs summary{cursor:pointer; font-weight:700; font-size:11.5px; color:var(--muted); list-style-position:inside}
+.detail .refs[open] summary{margin-bottom:8px}
+.detail .refs ul{margin:0; padding-left:20px; display:grid; gap:6px}
+.detail .refs a{color:var(--accent); text-underline-offset:2px}
 .cmpbar{position:fixed; left:12px; right:12px; bottom:14px; z-index:30; background:var(--ink); color:#EAF2FA; border-radius:var(--r-pill); padding:11px 12px 11px 20px; display:none; align-items:center; gap:10px; font-size:13px; box-shadow:0 10px 32px rgba(10,25,40,.35)}
 .cmpbar.show{display:flex}
 .cmpbar #cmpLabel{overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex:1}
@@ -373,6 +397,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 </p>
 
 <div id="list"></div>
+<div class="carousel-nav" id="carouselNav"></div>
 <div class="cmpgo-wrap" id="cmpGoWrap"></div>
 
 <footer class="note" id="notes">
@@ -645,7 +670,7 @@ function renderAll(){
       <div class="card-head">
         <span class="jichitai">${esc(d.name)}</span>
         ${sub ? `<span class="sub">${esc(sub)}</span>` : ''}
-        ${d.url ? `<a class="ext" href="${esc(d.url)}" target="_blank" rel="noopener">公式 ↗</a>` : ''}
+        <label class="cmp"><input type="checkbox" data-cmp="${esc(d.name)}" ${state.compare.includes(d.name) ? 'checked' : ''}>比較</label>
       </div>
       <div class="stages" role="group" aria-label="ステージ別の受給見込み">
         <div class="st"><i class="ico">🍼</i><span>妊娠〜出生</span><b data-val="${s.birth}">${manS(s.birth)}</b></div>
@@ -662,7 +687,6 @@ function renderAll(){
       <div class="tagchips">${tagHtml}</div>
       <div class="card-actions">
         <button class="morebtn" data-detail="${esc(d.name)}">${open ? '閉じる' : '詳しく見る'}</button>
-        <label class="cmp"><input type="checkbox" data-cmp="${esc(d.name)}" ${state.compare.includes(d.name) ? 'checked' : ''}>比較</label>
       </div>
       <div class="detail ${open ? 'open' : ''}">${open ? detailHtml(d, s) : ''}</div>
     </article>`;
@@ -679,9 +703,82 @@ function renderAll(){
     else state.compare = state.compare.filter(x => x !== n);
     renderAll();
   }));
+  const list = document.getElementById('list');
+  const useCarousel = !showFull && items.length > 1;
+  list.classList.toggle('carousel', useCarousel);
+  renderCarouselNav(useCarousel, items.length);
   renderCmpBar();
   animateCards();
 }
+
+// 選択カード（2件以上）をカルーセル表示するときのドット・矢印ナビ
+function renderCarouselNav(on, n){
+  const nav = document.getElementById('carouselNav');
+  const list = document.getElementById('list');
+  if(!on){ nav.innerHTML = ''; list.onscroll = null; return; }
+  nav.innerHTML = `
+    <button class="cnav" id="cPrev" aria-label="前のカード">←</button>
+    <span class="cdots" aria-hidden="true">${Array.from({length: n}, () => '<i></i>').join('')}</span>
+    <button class="cnav" id="cNext" aria-label="次のカード">→</button>`;
+  const cards = [...list.querySelectorAll('.card')];
+  const dots = [...nav.querySelectorAll('.cdots i')];
+  const prev = nav.querySelector('#cPrev'), next = nav.querySelector('#cNext');
+  const active = () => {
+    const c = list.scrollLeft + list.clientWidth / 2;
+    let best = 0, bd = Infinity;
+    cards.forEach((el, i) => { const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - c); if(d < bd){ bd = d; best = i; } });
+    return best;
+  };
+  const paint = () => {
+    const a = active();
+    dots.forEach((d, i) => d.classList.toggle('on', i === a));
+    prev.disabled = a === 0;
+    next.disabled = a === cards.length - 1;
+  };
+  list.onscroll = () => requestAnimationFrame(() => { paint(); updateMuniSticky(); });
+  const go = dir => {
+    const t = cards[Math.max(0, Math.min(cards.length - 1, active() + dir))];
+    t.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+  };
+  prev.addEventListener('click', () => go(-1));
+  next.addEventListener('click', () => go(1));
+  paint();
+}
+
+// スクロール中、見ているカードの自治体名を画面上部に追従表示する
+const muniSticky = document.createElement('div');
+muniSticky.className = 'muni-sticky';
+document.body.appendChild(muniSticky);
+let muniStickyName = '';
+function updateMuniSticky(){
+  const list = document.getElementById('list');
+  const cards = [...list.querySelectorAll('.card')];
+  let target = null;
+  if(cards.length){
+    if(list.classList.contains('carousel')){
+      const c = list.scrollLeft + list.clientWidth / 2;
+      let best = null, bd = Infinity;
+      for(const el of cards){ const d = Math.abs(el.offsetLeft + el.offsetWidth / 2 - c); if(d < bd){ bd = d; best = el; } }
+      const r = best.getBoundingClientRect();
+      if(r.top < 0 && r.bottom > 90) target = best;
+    } else {
+      for(const el of cards){ const r = el.getBoundingClientRect(); if(r.top < 0 && r.bottom > 90){ target = el; break; } }
+    }
+  }
+  if(target){
+    const name = target.dataset.name;
+    if(name !== muniStickyName){
+      muniStickyName = name;
+      const d = findMuni(name);
+      muniSticky.innerHTML = `${esc(name)}<span class="sub">${esc(d ? d.pref + (d.area ? '・' + d.area : '') : '')}</span>`;
+    }
+    muniSticky.classList.add('show');
+  } else {
+    muniSticky.classList.remove('show');
+    muniStickyName = '';
+  }
+}
+window.addEventListener('scroll', () => requestAnimationFrame(updateMuniSticky), { passive: true });
 
 function spawnConfetti(box){
   const colors = ['#F08168', '#2E86C1', '#39A17C', '#F0B429'];
