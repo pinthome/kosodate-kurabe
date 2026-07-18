@@ -51,7 +51,7 @@
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
-footer.note{scroll-margin-top:16px}
+#notes{scroll-margin-top:16px}
 body{
   margin:0; color:var(--ink);
   background:
@@ -162,12 +162,12 @@ details.onb .onb-body ul{margin:0; padding-left:1.3em}
 details.onb .onb-body li{margin-bottom:4px}
 .onbov{position:fixed; inset:0; z-index:60; background:rgba(10,20,30,.6); display:none; padding:16px}
 .onbov.show{display:flex}
-.onbcard{margin:auto; max-width:480px; width:100%; background:var(--surface); color:var(--ink); border-radius:26px; display:flex; flex-direction:column; max-height:86vh; box-shadow:0 10px 40px rgba(5,15,25,.3)}
-.onbhead{display:flex; justify-content:flex-end; padding:10px 12px 0}
-.onbhead button{border:0; background:none; color:var(--muted); font:inherit; font-size:12px; cursor:pointer; padding:4px 8px}
-.onbbody{padding:2px 16px 8px; overflow-y:auto; font-size:13px; line-height:1.9; height:min(58vh, 440px); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px}
-.onbimg{display:block; max-width:100%; max-height:100%; min-height:0; object-fit:contain; border-radius:16px}
-.onb-by{margin:0; flex:none; font-size:11.5px; color:var(--muted)}
+.onbcard{margin:auto; max-width:480px; width:100%; background:var(--surface); color:var(--ink); border-radius:26px; display:flex; flex-direction:column; max-height:86vh; box-shadow:0 10px 40px rgba(5,15,25,.3); overflow:hidden; position:relative}
+.onbhead{position:absolute; top:10px; right:10px; z-index:2}
+.onbhead button{border:0; background:rgba(255,255,255,.92); color:var(--muted); font:inherit; font-size:12px; font-weight:600; cursor:pointer; padding:7px 14px; border-radius:var(--r-pill); box-shadow:var(--sh-sm)}
+.onbbody{padding:0; overflow-y:auto; font-size:13px; line-height:1.9}
+.onbimg{display:block; width:100%; height:auto}
+.onb-by{margin:0; padding:10px 16px 0; text-align:center; font-size:11.5px; color:var(--muted)}
 .onb-by a{color:var(--accent); font-weight:600}
 .onbbody h3{font-size:16px; margin:8px 0 12px; font-weight:700}
 .onbbody p{margin:0 0 12px}
@@ -182,8 +182,11 @@ details.onb .onb-body li{margin-bottom:4px}
 .onbdots{display:flex; gap:6px; margin:0 auto}
 .onbdots i{width:7px; height:7px; border-radius:50%; background:var(--bar); cursor:pointer}
 .onbdots i.on{background:var(--accent)}
-.onb-credit{font-size:12px; color:var(--muted); margin-top:16px; line-height:1.8}
+.onb-credit{font-size:12px; color:var(--muted); margin-top:16px; line-height:1.8; text-align:center}
 .onb-credit a{color:var(--accent); font-weight:600}
+/* Instagramリンク: アイコン＋「Instagram」表記で遷移先を明示 */
+.iglink{display:inline-flex; align-items:center; gap:6px}
+.iglink .igmark{flex:none; width:16px; height:16px}
 .backrow{display:flex; justify-content:space-between; gap:12px; margin-top:16px}
 .searchbox{font:inherit; font-size:15px; border:1.5px solid var(--line); border-radius:var(--r-pill); padding:0 20px; height:52px; background:var(--surface); color:var(--ink); width:100%}
 .browselist{margin-top:12px; max-height:440px; overflow-y:auto; border:1.5px solid var(--line); border-radius:18px; -webkit-overflow-scrolling:touch}
@@ -201,7 +204,6 @@ details.onb .onb-body li{margin-bottom:4px}
 .resultnote b{color:var(--ink); font-weight:600}
 .resultnote a{color:var(--accent); text-decoration:underline; text-underline-offset:2px; cursor:pointer}
 .refmark{font-size:9.5px; color:var(--accent); font-weight:700; vertical-align:2px; margin-left:1px; text-decoration:none}
-footer.note h3{font-size:11px; letter-spacing:.08em; color:var(--ink); margin:0 0 8px; font-weight:700}
 footer.note .fn{margin:0 0 7px; display:flex; gap:7px}
 footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-variant-numeric:tabular-nums}
 .calcnote-mini{font-size:10.5px; color:var(--muted); margin-top:6px; line-height:1.5}
@@ -432,21 +434,38 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 <div class="carousel-nav" id="carouselNav"></div>
 <div class="cmpgo-wrap" id="cmpGoWrap"></div>
 
-<footer class="note" id="notes">
-  <h3>注記・出典</h3>
+<footer class="note">
+  <details class="onb" id="notes"><summary>注記・出典（概算の前提）</summary>
+  <div class="onb-body">
   <div class="fn"><span class="num">注1</span><span><b>金額はすべて概算です。</b>「これから受けられる」現金・商品券・ポイント給付と、金額換算できる補助の合計で、すでに年齢が過ぎた給付やイベントは含みません。給付には居住期間・申請などの要件があり、実際に受給できるとは限りません。金額に「（都標準額を推定）」等と付記した項目は公表額が非公開のため近隣の標準額で推定しています。</span></div>
   <div class="fn"><span class="num">注2</span><span><b>ステージ別金額の内訳。</b>妊娠〜出生＝妊婦のための支援給付・出産育児一時金・都の赤ちゃんファースト・自治体の出産祝金等／未就学（0〜5歳）＝児童手当・018サポート・誕生日等の給付・保育料無償化や認可外補助（保育予定に応じて）／小中高（6〜18歳）＝児童手当・018サポート・入学祝金・中学校給食費（無償の場合 月5,000円×中学の残り期間で概算）。児童手当の第3子以降増額は、入力されたお子さまのうち22歳未満のきょうだい数で1年ごとに判定した概算です（18〜21歳のごきょうだいも入力すると精度が上がります。実際の判定は22歳年度末までの子が対象です）。</span></div>
   <div class="fn"><span class="num">注3</span><span><b>保育料無償化・高校授業料の扱い。</b>保育料は「認可保育園を利用予定」の場合のみ、0〜2歳児が無償になる自治体（東京＝都制度で第1子から所得制限なし、埼玉＝県事業で第3子以降、ほか市町村独自）について平均3万円/月×利用月数で換算しています。実際の保育料は世帯所得で変わります。全国共通の無償化（3〜5歳、非課税世帯の0〜2歳、同時在園の多子軽減）は差が出ないため換算していません。高校授業料は2026年4月から国制度で公私とも実質無償（私立上限45.7万円/年・所得制限なし）のため換算せず、都県の上乗せ・入学金補助の差は「都県の制度」欄に記載しています。</span></div>
   <div class="fn"><span class="num">注4</span><span><b>「そのほかの制度」タグは公表情報からの機械抽出</b>による概要で、制度の有無・名称の目安です。詳細・最新の実施状況は各カードの詳細と公式サイトでご確認ください。</span></div>
   <div class="fn"><span class="num">注5</span><span><b>医療費・給食・待機児童。</b>医療費助成は金額換算していません。学校給食費は、中学校の無償化のみ月5,000円×中学の残り期間で概算換算して合計に含めます（小学校は2026年4月から全国共通のため換算しません。一部補助・多子限定の場合は該当時のみ）。待機児童数は保育所が令和7年〜令和8年4月1日時点の最新公表値（公表時期が都県で異なるため年度が混在します）・放課後児童クラブが令和7年5月1日時点の公表値です（埼玉県の学童は50人以上の自治体のみ公表のため、それ以外は「50人未満」と表示）。</span></div>
   <div class="fn"><span class="num">注6</span><span>制度内容は<b>2026年7月時点</b>の各自治体公式サイト・各都県の公表資料にもとづく参考情報です。制度は随時変わり、支給の可否には条件がある場合があります。ご提案・意思決定の前に、必ず各自治体の公式サイトで最新情報をご確認ください。</span></div>
-  <details class="onb" style="margin-top:14px"><summary>免責事項</summary>
+  </div>
+  </details>
+  <details class="onb" style="margin-top:8px"><summary>免責事項</summary>
       <div class="onb-body"><p>当ページで提供している子育て支援制度の一覧は、各自治体の公式ウェブサイト等に基づき作成しておりますが、情報の正確性、最新性、完全性を保証するものではありません。制度の内容は頻繁に変更される可能性があり、情報が最新の情報と異なる場合もございます。必ず各自治体の公式ウェブサイト等で最新の情報をご確認ください。当ページの情報に基づいて行動した結果、利用者に何らかの損害が発生した場合でも、当方は一切の責任を負いかねます。また、この一覧は情報提供のみを目的としており、法的助言を提供するものではありません。具体的な手続きや適用条件については、各自治体の窓口に直接お問い合わせください。</p>
       <p>【リンク先の情報】この一覧からリンクしている外部ウェブサイトの情報については、当方は一切の責任を負いません。リンク先のウェブサイトの内容やプライバシーポリシー等については、各ウェブサイトの責任となります。</p>
       <p>【著作権】この一覧（掲載データ・比較表・文章・プログラムを含む）の著作権は作成者に帰属します。無断転載・複製・改変、およびスクレイピング等の自動取得によるデータ収集・再配布・データベース化を禁じます。ただし、個人的な利用や非営利目的での利用は、出典を明記すれば許可される場合があります。</p>
       <p>【変更の可能性】この免責事項は、予告なく変更される場合があります。</p></div>
   </details>
-  <p class="onb-credit">作成者<br><a href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener">ゆか⌇都心に住みたい子育て世帯のおうち探し</a></p>
+  <details class="onb" style="margin-top:8px"><summary>プライバシーポリシー</summary>
+      <div class="onb-body">
+      <p>【個人情報の取得】当サイトは、会員登録・お名前・連絡先などの個人情報を取得していません。入力された条件（お子さまの年齢など）はお使いの端末内でのみ処理され、当方のサーバーに送信・保存されません。</p>
+      <p>【アクセス解析】当サイトは、サービス改善のためにCloudflare Web Analyticsを利用しています。Cookieを使わない仕組みで、個人を特定する情報は収集しません。</p>
+      <p>【ローカルストレージ】はじめての方向け案内の表示済みフラグ等を、お使いのブラウザのローカルストレージに保存しています。個人情報は含まれず、ブラウザの設定からいつでも削除できます。</p>
+      <p>【外部リンク】各自治体の公式サイトやSNSなど外部サイトへのリンクを含みます。リンク先での情報の取り扱いは、各サイトのプライバシーポリシーに従います。</p>
+      <p>【変更の可能性】本ポリシーは、機能追加（アクセス解析の変更・広告の導入など）に応じて予告なく変更される場合があります。変更時は本ページで公表します。</p>
+      <p>【制定日】2026年7月17日</p></div>
+  </details>
+  <p class="onb-credit" style="margin-top:14px">お問い合わせ・制度情報の誤りのご指摘は、下記InstagramのDMまでお気軽にどうぞ。</p>
+  <p class="onb-credit" style="margin-top:8px">作成者<br>
+    <a class="iglink" href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener" aria-label="Instagram: ゆか⌇都心に住みたい子育て世帯のおうち探し">
+      <svg class="igmark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="ig-f" x1="0" y1="24" x2="24" y2="0"><stop offset="0" stop-color="#F58529"/><stop offset=".55" stop-color="#DD2A7B"/><stop offset="1" stop-color="#8134AF"/></linearGradient></defs><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="url(#ig-f)" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="url(#ig-f)" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.3" fill="url(#ig-f)"/></svg>
+      ゆか⌇都心に住みたい子育て世帯のおうち探し
+    </a></p>
 </footer>
 </div>
 
@@ -1019,6 +1038,7 @@ function shareText(){
 }
 function shareUrl(){
   const u = new URL(location.href);
+  u.hash = '';
   u.searchParams.set('via', 'share');
   return u.toString();
 }
@@ -1087,7 +1107,7 @@ let onbIdx = 0;
 function renderOnb(){
   const sl = ONB_SLIDES[onbIdx];
   document.getElementById('onbBody').innerHTML = `<img class="onbimg" src="${sl.img}" alt="${esc(sl.alt)}">` +
-    (onbIdx === ONB_SLIDES.length - 1 ? `<p class="onb-by">作成者: <a href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener">ゆか⌇都心に住みたい子育て世帯のおうち探し</a></p>` : '');
+    (onbIdx === ONB_SLIDES.length - 1 ? `<p class="onb-by">作成者: <a class="iglink" href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener" aria-label="Instagram: ゆか⌇都心に住みたい子育て世帯のおうち探し"><svg class="igmark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="ig-o" x1="0" y1="24" x2="24" y2="0"><stop offset="0" stop-color="#F58529"/><stop offset=".55" stop-color="#DD2A7B"/><stop offset="1" stop-color="#8134AF"/></linearGradient></defs><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="url(#ig-o)" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="url(#ig-o)" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.3" fill="url(#ig-o)"/></svg>ゆか⌇都心に住みたい子育て世帯のおうち探し</a></p>` : '');
   document.getElementById('onbDots').innerHTML = ONB_SLIDES.map((_, i) => `<i class="${i === onbIdx ? 'on' : ''}" data-dot="${i}"></i>`).join('');
   document.querySelectorAll('#onbDots i').forEach(d => d.addEventListener('click', () => { onbIdx = +d.dataset.dot; renderOnb(); }));
   document.getElementById('onbPrev').disabled = onbIdx === 0;
@@ -1145,6 +1165,13 @@ document.getElementById('cmpOpen').addEventListener('click', () => {
   // 比較表は開かず、下部の選択自治体カードへスクロール
   const el = document.getElementById('list');
   if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+// 「注○」参照リンクから飛んだとき、閉じている注記アコーディオンを開いてから着地させる
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href="#notes"]');
+  if(!a) return;
+  const d = document.getElementById('notes');
+  if(d) d.open = true;
 });
 document.getElementById('cmpClear').addEventListener('click', () => { state.compare = []; renderAll(); });
 document.getElementById('cmpClose').addEventListener('click', closeCompare);
