@@ -70,6 +70,11 @@ body{
 }
 .wrap{max-width:680px; margin:0 auto; padding:30px 16px 120px}
 header.hero{text-align:center}
+/* コピーライトフッター */
+.copyfoot{text-align:center; margin-top:36px; font-size:11px; color:var(--muted)}
+.copyfoot p{margin:0 0 6px}
+.copyfoot .linkbtn{font-size:11px; color:var(--muted)}
+.copyfoot .cline{letter-spacing:.04em}
 .eyebrow{display:inline-block; font-size:11px; letter-spacing:.12em; color:var(--accent); font-weight:700; background:var(--surface); border-radius:var(--r-pill); padding:6px 16px; box-shadow:var(--sh-sm)}
 h1{font-family:var(--font-round); font-size:27px; font-weight:800; letter-spacing:.01em; margin:14px 0 10px; line-height:1.4}
 h1 .hl{background:linear-gradient(transparent 68%, rgba(36,175,255,.35) 68%)}
@@ -470,7 +475,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
       <p>【著作権】この一覧（掲載データ・比較表・文章・プログラムを含む）の著作権は作成者に帰属します。無断転載・複製・改変、およびスクレイピング等の自動取得によるデータ収集・再配布・データベース化を禁じます。ただし、個人的な利用や非営利目的での利用は、出典を明記すれば許可される場合があります。</p>
       <p>【変更の可能性】この免責事項は、予告なく変更される場合があります。</p></div>
   </details>
-  <details class="onb" style="margin-top:8px"><summary>プライバシーポリシー</summary>
+  <details class="onb" id="privacy" style="margin-top:8px"><summary>プライバシーポリシー</summary>
       <div class="onb-body">
       <p>【個人情報の取得】当サイトは、会員登録・お名前・連絡先などの個人情報を取得していません。入力された条件（お子さまの年齢など）はお使いの端末内でのみ処理され、当方のサーバーに送信・保存されません。</p>
       <p>【アクセス解析】当サイトは、サービス改善のためにCloudflare Web Analyticsを利用しています。Cookieを使わない仕組みで、個人を特定する情報は収集しません。</p>
@@ -507,6 +512,10 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
       </a>
     </div>
   </section>
+  <div class="copyfoot">
+    <p><button type="button" class="linkbtn" id="footOnb">はじめての方へ</button>　<a class="linkbtn" href="#privacy">プライバシーポリシー</a></p>
+    <p class="cline">© 2026 引っ越し先の子育て支援くらべ</p>
+  </div>
 </footer>
 </div>
 
@@ -1209,11 +1218,13 @@ document.getElementById('cmpOpen').addEventListener('click', () => {
 });
 // 「注○」参照リンクから飛んだとき、閉じている注記アコーディオンを開いてから着地させる
 document.addEventListener('click', e => {
-  const a = e.target.closest('a[href="#notes"]');
+  const a = e.target.closest('a[href="#notes"], a[href="#privacy"]');
   if(!a) return;
-  const d = document.getElementById('notes');
-  if(d) d.open = true;
+  const d = document.getElementById(a.getAttribute('href').slice(1));
+  if(d && d.tagName === 'DETAILS') d.open = true;
 });
+
+document.getElementById('footOnb').addEventListener('click', openOnb);
 document.getElementById('cmpClear').addEventListener('click', () => { state.compare = []; renderAll(); });
 document.getElementById('cmpClose').addEventListener('click', closeCompare);
 document.getElementById('overlay').addEventListener('click', e => { if(e.target.id === 'overlay') closeCompare(); });
