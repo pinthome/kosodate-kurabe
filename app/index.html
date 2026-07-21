@@ -183,6 +183,24 @@ details.onb .onb-body li{margin-bottom:4px}
 .onbdots i{width:7px; height:7px; border-radius:50%; background:var(--bar); cursor:pointer}
 .onbdots i.on{background:var(--accent)}
 .onb-credit{font-size:12px; color:var(--muted); margin-top:16px; line-height:1.8; text-align:center}
+/* 作成者プロフィールカード */
+.pfcard{max-width:480px; margin:24px auto 44px; background:var(--surface); border-radius:24px; padding:26px 22px; box-shadow:var(--sh-sm); text-align:center}
+.pf-photo{width:96px; height:96px; border-radius:50%; object-fit:cover; display:block; margin:0 auto 10px}
+.pf-name{font-family:var(--font-round); font-size:17px; font-weight:800; margin:0; color:var(--ink)}
+.pf-title{font-size:11.5px; color:var(--muted); margin:2px 0 14px}
+.pf-bio{text-align:center; font-size:12.5px; line-height:1.9; color:var(--ink)}
+.pf-bio p{margin:0 0 10px}
+.pfcard .mk{background:linear-gradient(transparent 66%, rgba(36,175,255,.32) 66%); font-weight:700}
+.pfcard .mkg{background:linear-gradient(transparent 66%, rgba(6,199,85,.3) 66%)}
+.pf-btn{display:flex; width:100%; align-items:center; justify-content:center; gap:7px; border-radius:var(--r-pill); padding:12px 8px; font-size:13.5px; font-weight:700; text-decoration:none; color:#fff; box-shadow:var(--sh-sm); margin-top:14px}
+.pf-linebox{margin-top:14px; background:#EAF9F0; border-radius:16px; padding:14px 16px 16px; text-align:center; font-size:12.5px; line-height:1.85; color:var(--ink)}
+.pf-linebox p{margin:0}
+.pf-line-head{font-weight:700}
+.pf-linebox ul{margin:2px auto 6px; padding-left:1.5em; display:inline-block; text-align:left; list-style-position:outside}
+.pf-linebox .pf-btn{margin-top:12px}
+.pf-btn.pf-ig{background:linear-gradient(45deg,#F58529,#DD2A7B 55%,#8134AF)}
+.pf-btn.pf-line{background:#06C755}
+.pf-btn:hover{filter:brightness(1.06)}
 .onb-credit a{color:var(--accent); font-weight:600}
 /* Instagramリンク: アイコン＋「Instagram」表記で遷移先を明示 */
 .iglink{display:inline-flex; align-items:center; gap:6px}
@@ -435,6 +453,33 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 <div class="cmpgo-wrap" id="cmpGoWrap"></div>
 
 <footer class="note">
+  <p class="onb-credit" style="margin-top:14px">お問い合わせ・制度情報の誤りのご指摘は、下記InstagramのDMにてお願いいたします</p>
+  <section class="pfcard" aria-label="作成者について">
+    <img class="pf-photo" src="img/profile.jpg" alt="作成者 ゆかの写真" width="96" height="96" loading="lazy">
+    <p class="pf-name">ゆか</p>
+    <p class="pf-title">都心に住みたい子育て世帯のおうち探し</p>
+    <div class="pf-bio">
+      <p>都内で不動産のお仕事をしながら、<b>二児の子育てに奮闘中</b>。<br>47㎡の我が家で、家族4人＋猫と暮らしています🐈</p>
+      <p>同じ時代に子育てをしている方、これから始まる方にとって、<span class="mk">明日が今日よりちょっといい日になるように</span>、自分が経験して<b>「困ったこと」</b>や<b>「あったらいいな」</b>を、少しずつカタチにしています。</p>
+      <p>Instagramもフォローいただけると嬉しいです☺️</p>
+    </div>
+    <a class="pf-btn pf-ig" href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#fff" stroke-width="2" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.3" fill="#fff" stroke="none"/></svg>
+      Instagram
+    </a>
+    <div class="pf-linebox">
+      <p class="pf-line-head">🎁 これまで作ったツールも<span class="mkg">プレゼント中</span></p>
+      <ul>
+        <li><b>各区の学童保育比較</b></li>
+        <li><b>公立小中学校の建て替え情報まとめ</b>　など</li>
+      </ul>
+      <p>ぜひ受け取って、お役立てくださいね。</p>
+      <a class="pf-btn pf-line" href="https://il9fo0d8.autosns.app/addfriend/s/brZAOvdiX6/@074himyv" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="#fff" aria-hidden="true"><path d="M12 3C6.9 3 2.8 6.4 2.8 10.6c0 3.8 3.3 6.9 7.8 7.5.3.1.7.2.8.5.1.2.1.6 0 .8l-.3 1.6c-.1.5-.4 1.8 1.6.9 2-.8 5.2-3.1 7.1-5.3 1.3-1.4 1.9-2.9 1.9-4.6C21.2 6.4 17.1 3 12 3z"/></svg>
+        公式LINE
+      </a>
+    </div>
+  </section>
   <details class="onb" id="notes"><summary>注記・出典（概算の前提）</summary>
   <div class="onb-body">
   <div class="fn"><span class="num">注1</span><span><b>金額はすべて概算です。</b>「これから受けられる」現金・商品券・ポイント給付と、金額換算できる補助の合計で、すでに年齢が過ぎた給付やイベントは含みません。給付には居住期間・申請などの要件があり、実際に受給できるとは限りません。金額に「（都標準額を推定）」等と付記した項目は公表額が非公開のため近隣の標準額で推定しています。</span></div>
@@ -460,12 +505,6 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
       <p>【変更の可能性】本ポリシーは、機能追加（アクセス解析の変更・広告の導入など）に応じて予告なく変更される場合があります。変更時は本ページで公表します。</p>
       <p>【制定日】2026年7月17日</p></div>
   </details>
-  <p class="onb-credit" style="margin-top:14px">お問い合わせ・制度情報の誤りのご指摘は、下記InstagramのDMまでお気軽にどうぞ。</p>
-  <p class="onb-credit" style="margin-top:8px">作成者<br>
-    <a class="iglink" href="https://www.instagram.com/yuka_pinthome/" target="_blank" rel="noopener" aria-label="Instagram: ゆか⌇都心に住みたい子育て世帯のおうち探し">
-      <svg class="igmark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><defs><linearGradient id="ig-f" x1="0" y1="24" x2="24" y2="0"><stop offset="0" stop-color="#F58529"/><stop offset=".55" stop-color="#DD2A7B"/><stop offset="1" stop-color="#8134AF"/></linearGradient></defs><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" stroke="url(#ig-f)" stroke-width="2"/><circle cx="12" cy="12" r="4.2" stroke="url(#ig-f)" stroke-width="2"/><circle cx="17.2" cy="6.8" r="1.3" fill="url(#ig-f)"/></svg>
-      ゆか⌇都心に住みたい子育て世帯のおうち探し
-    </a></p>
 </footer>
 </div>
 
