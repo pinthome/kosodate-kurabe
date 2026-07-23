@@ -367,6 +367,20 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   .cmpgo-wrap .gobtn{max-width:420px}
 }
 </style>
+<!-- Google アナリティクス（GA4）。localhost では計測しない -->
+<script>
+(function(){
+  if(location.hostname === 'localhost' || location.hostname === '127.0.0.1') return;
+  var ID = 'G-191KRRCF6H';
+  var s = document.createElement('script');
+  s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ID;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  window.gtag = function(){ dataLayer.push(arguments); };
+  gtag('js', new Date());
+  gtag('config', ID);
+})();
+</script>
 </head>
 <body>
 
@@ -477,11 +491,12 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   <details class="onb" id="privacy" style="margin-top:8px"><summary>プライバシーポリシー</summary>
       <div class="onb-body">
       <p>【個人情報の取得】当サイトは、会員登録・お名前・連絡先などの個人情報を取得していません。入力された条件（お子さまの年齢など）はお使いの端末内でのみ処理され、当方のサーバーに送信・保存されません。</p>
-      <p>【アクセス解析】当サイトは、サービス改善のためにCloudflare Web Analyticsを利用しています。Cookieを使わない仕組みで、個人を特定する情報は収集しません。</p>
+      <p>【アクセス解析】当サイトは、サービス改善のためにGoogle アナリティクス（GA4）およびCloudflare Web Analyticsを利用しています。Google アナリティクスはCookieを使用し、閲覧されたページ・滞在時間・参照元・おおよその地域・端末情報などの利用状況をGoogle LLCへ送信します。氏名・連絡先などの個人を特定する情報は送信していません。Cloudflare Web AnalyticsはCookieを使いません。</p>
+      <p>【外部送信の停止（オプトアウト）】Google アナリティクスによる送信を停止したい場合は、<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google アナリティクス オプトアウト アドオン</a>のご利用、またはブラウザのCookie設定で無効にできます。Googleにおけるデータの取り扱いは<a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Googleのポリシーと規約</a>をご確認ください。</p>
       <p>【ローカルストレージ】はじめての方向け案内の表示済みフラグ等を、お使いのブラウザのローカルストレージに保存しています。個人情報は含まれず、ブラウザの設定からいつでも削除できます。</p>
       <p>【外部リンク】各自治体の公式サイトやSNSなど外部サイトへのリンクを含みます。リンク先での情報の取り扱いは、各サイトのプライバシーポリシーに従います。</p>
       <p>【変更の可能性】本ポリシーは、機能追加（アクセス解析の変更・広告の導入など）に応じて予告なく変更される場合があります。変更時は本ページで公表します。</p>
-      <p>【制定日】2026年7月17日</p></div>
+      <p>【制定日】2026年7月17日（最終更新: 2026年7月22日）</p></div>
   </details>
   <h3 class="foot-title">作成者について</h3>
   <p class="onb-credit" style="margin-top:12px">お問い合わせ・制度情報の誤りのご指摘は、下記InstagramのDMにてお願いいたします。<br>使ってみたご感想もいただけるととっても励みになります🙇‍♀️</p>
@@ -544,6 +559,8 @@ const MAX_KIDS = 10;
 const state = { view:'main', showAll:false, q:'', pref:'1都3県すべて', kids:[{age:-1}], care:'ninka', single:false, twins:false, careNeeds:false, cmpPref:'東京都', sort:'name', compare:[], openDetail:new Set() };
 
 const ALL_MUNIS = Object.values(PREFS).flatMap(c => c.munis);
+// ---- 計測（GA4）。gtag未読込（localhost・ブロック時）は何もしない ----
+function track(name, params){ if(typeof window.gtag === 'function') window.gtag('event', name, params || {}); }
 function findMuni(name){ return ALL_MUNIS.find(d => d.name === name); }
 function currentMunis(){ return state.pref === ALL ? ALL_MUNIS : PREFS[state.pref].munis; }
 function prefTagOf(p){ return p === '東京都' ? '都' : '県'; }
@@ -729,7 +746,7 @@ function renderBrowse(){
   el.querySelectorAll('[data-madd]').forEach(b => b.addEventListener('click', () => {
     const n = b.dataset.madd;
     if(state.compare.includes(n)) state.compare = state.compare.filter(x => x !== n);
-    else { if(state.compare.length >= 3) return; state.compare.push(n); }
+    else { if(state.compare.length >= 3) return; state.compare.push(n); track('select_muni', { muni_name: n, from: 'list' }); }
     renderAll();
   }));
 }
@@ -798,12 +815,13 @@ function renderAll(){
 
   document.querySelectorAll('[data-detail]').forEach(b => b.addEventListener('click', () => {
     const n = b.dataset.detail;
-    state.openDetail.has(n) ? state.openDetail.delete(n) : state.openDetail.add(n);
+    if(state.openDetail.has(n)) state.openDetail.delete(n);
+    else { state.openDetail.add(n); track('view_detail', { muni_name: n }); }
     renderAll();
   }));
   document.querySelectorAll('[data-cmp]').forEach(cb => cb.addEventListener('change', () => {
     const n = cb.dataset.cmp;
-    if(cb.checked){ if(state.compare.length >= 3){ cb.checked = false; return; } state.compare.push(n); }
+    if(cb.checked){ if(state.compare.length >= 3){ cb.checked = false; return; } state.compare.push(n); track('select_muni', { muni_name: n, from: 'card' }); }
     else state.compare = state.compare.filter(x => x !== n);
     renderAll();
   }));
@@ -1035,6 +1053,7 @@ function renderCmpBar(){
 }
 let _prevCmpCount = 0;
 function openCompare(){
+  track('open_compare', { munis: state.compare.join(','), muni_count: state.compare.length });
   const ds = state.compare.map(n => findMuni(n)).filter(Boolean);
   const anyTokyo = ds.some(d => d.pref === '東京都');
   const ss = ds.map(d => calcStages(d, state.kids));
@@ -1116,6 +1135,7 @@ function shareBlockHtml(){
 function wireShare(root){
   root.querySelectorAll('[data-share]').forEach(b => b.addEventListener('click', async () => {
     const text = shareText(), url = shareUrl();
+    track('share', { method: b.dataset.share, content_type: 'comparison', item_id: state.compare.join(',') });
     if(b.dataset.share === 'native'){
       try{ await navigator.share({ text, url }); }catch(e){ /* キャンセル時は何もしない */ }
       return;
@@ -1196,7 +1216,7 @@ function closeOnb(){
   try{ localStorage.setItem('kosodate_onb_seen', '1'); }catch(e){}
 }
 document.getElementById('onbNext').addEventListener('click', () => {
-  if(onbIdx >= ONB_SLIDES.length - 1) closeOnb();
+  if(onbIdx >= ONB_SLIDES.length - 1){ track('onb_complete'); closeOnb(); }
   else { onbIdx++; renderOnb(); }
 });
 document.getElementById('onbPrev').addEventListener('click', () => { if(onbIdx > 0){ onbIdx--; renderOnb(); } });
@@ -1207,7 +1227,7 @@ const sharedOpen = restoreFromUrl();
 // 共有リンクから開いた場合はオンボーディングを出さず、比較内容を先に見せる
 if(!sharedOpen){ try{ if(!localStorage.getItem('kosodate_onb_seen')) openOnb(); }catch(e){ openOnb(); } }
 
-document.getElementById('showAllBtn').addEventListener('click', () => { state.showAll = !state.showAll; renderAll(); });
+document.getElementById('showAllBtn').addEventListener('click', () => { state.showAll = !state.showAll; if(state.showAll) track('browse_all'); renderAll(); });
 document.getElementById('muniSearch').addEventListener('input', e => { state.q = e.target.value; renderBrowse(); });
 document.getElementById('sortSel').addEventListener('change', e => { state.sort = e.target.value; renderAll(); });
 document.getElementById('cmpOpen').addEventListener('click', () => {
@@ -1215,6 +1235,17 @@ document.getElementById('cmpOpen').addEventListener('click', () => {
   const el = document.getElementById('list');
   if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
+// 外部リンクのクリックを計測（SNSシェア・自治体公式・CTA）
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href]');
+  if(!a) return;
+  const href = a.getAttribute('href') || '';
+  if(a.classList.contains('sicon')) track('share', { method: href.includes('line.me') ? 'line' : 'x', content_type: 'comparison', item_id: state.compare.join(',') });
+  else if(a.classList.contains('pf-ig') || a.classList.contains('iglink')) track('click_cta', { cta: 'instagram', location: a.classList.contains('pf-ig') ? 'profile' : 'onboarding' });
+  else if(a.classList.contains('pf-line')) track('click_cta', { cta: 'line', location: 'profile' });
+  else if(a.classList.contains('official') || a.classList.contains('ext')) track('click_official', { muni_name: a.closest('.card')?.dataset.name || '' });
+});
+
 // 「注○」参照リンクから飛んだとき、閉じている注記アコーディオンを開いてから着地させる
 document.addEventListener('click', e => {
   const a = e.target.closest('a[href="#notes"], a[href="#privacy"]');
