@@ -47,6 +47,19 @@ for (const host of ['localhost:8787', '127.0.0.1:8787']) {
   assert(res.status === 200 && calls.length === 1, `${host}: httpでもリダイレクトしない`);
 }
 
+// ---- AIクローラーのUAブロック ----
+for (const ua of ['GPTBot/1.0 (+https://openai.com/gptbot)', 'Mozilla/5.0 AppleWebKit compatible; ClaudeBot/1.0', 'CCBot/2.0', 'PerplexityBot/1.0', 'Bytespider']) {
+  const { env, calls } = makeEnv();
+  const res = await worker.fetch(new Request('https://kosodate.pint-home.com/', { headers: { 'user-agent': ua } }), env);
+  assert(res.status === 403 && calls.length === 0, `AIボット拒否: ${ua.split('/')[0]} は403`);
+}
+// 通常ブラウザ・検索エンジンは通す
+for (const ua of ['Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15', 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)', 'Mozilla/5.0 (compatible; bingbot/2.0)']) {
+  const { env, calls } = makeEnv();
+  const res = await worker.fetch(new Request('https://kosodate.pint-home.com/', { headers: { 'user-agent': ua } }), env);
+  assert(res.status === 200 && calls.length === 1, `通常UA許可: ${ua.slice(0, 40)}...`);
+}
+
 // ---- /api/prefs: 同一オリジンのfetchのみ許可 ----
 const API = 'https://kosodate.pint-home.com/api/prefs';
 
@@ -59,6 +72,7 @@ const API = 'https://kosodate.pint-home.com/api/prefs';
   const total = Object.values(prefs).reduce((s, c) => s + c.munis.length, 0);
   assert(total === 212, `API: 212自治体を返す（実際: ${total}）`);
   assert(res.headers.get('cache-control') === 'private, max-age=3600', 'API: 共有キャッシュに載らないcache-control');
+  assert(res.headers.get('cross-origin-resource-policy') === 'same-origin', 'API: CORPヘッダーで他サイト埋め込みを禁止');
   assert(calls.length === 0, 'API: Assetsに委譲しない');
 }
 

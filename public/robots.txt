@@ -23,6 +23,27 @@ Disallow: /
 User-agent: meta-externalagent
 Disallow: /
 
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: Diffbot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: omgili
+Disallow: /
+
+User-agent: ImagesiftBot
+Disallow: /
+
+User-agent: AI2Bot
+Disallow: /
+
+User-agent: DuckAssistBot
+Disallow: /
+
 User-agent: *
 Disallow: /api/
 
