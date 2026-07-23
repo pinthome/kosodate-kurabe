@@ -126,6 +126,11 @@ for (const [label, doc] of [['ソース', html], ['ビルド', built]]) {
 }
 assert(built.includes('https://kosodate.pint-home.com/img/onb-1.jpg'), 'OGP画像URLが絶対パスで指定されている');
 
+// ---- 比較の上限と並び替え ----
+assert(/const MAX_CMP = 6;/.test(html), '比較上限が6（MAX_CMP定数）');
+assert(!/compare\.length >= 3\b/.test(html), '比較上限のハードコード3が残っていない');
+assert(html.includes('data-mv='), '選択チップに並び替えボタンがある');
+
 // ---- 多子世帯の入力上限: 第5子以降も入力できること ----
 const maxKids = html.match(/const MAX_KIDS = (\d+);/);
 assert(maxKids && +maxKids[1] >= 10, `MAX_KIDSが10以上（実際: ${maxKids && maxKids[1]}）`);
