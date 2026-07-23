@@ -301,7 +301,9 @@ label.cmp input{accent-color:var(--accent)}
 .detail dl{margin:0; display:grid; gap:9px}
 .detail dt{font-size:10.5px; letter-spacing:.06em; color:var(--muted); font-weight:600; margin-bottom:1px}
 .detail dd{margin:0; font-size:12px; white-space:pre-line}
-.detail dd b.m{color:var(--joy-deep); font-variant-numeric:tabular-nums; font-weight:700}
+.detail dd b.m, table.cmp td b.m{color:var(--joy-deep); font-variant-numeric:tabular-nums; font-weight:700}
+table.cmp .dline{flex-wrap:wrap; margin:0 0 7px}
+table.cmp .dprice{max-width:none; width:100%}
 .dline{display:flex; gap:7px; margin:0 0 5px; align-items:baseline}
 .dline:last-child{margin-bottom:0}
 .dwhen{flex:0 0 auto; background:var(--joy-soft); color:var(--joy-deep); border-radius:var(--r-pill); font-size:10px; font-weight:700; padding:1px 9px; white-space:nowrap}
@@ -985,13 +987,6 @@ function stageCalcHtml(s){
   return `<div class="stagecalc">${block('birth')}${block('pre')}${block('school')}
     <div class="sg">合計　${man(s.total)}（★=自治体独自 計${man(s.muni)}）</div></div>`;
 }
-function benefitsText(d){
-  const rows = [];
-  (d.birth || []).forEach(b => rows.push(`【妊娠・出産時】${b.label}　${amtText(b.amounts)}`));
-  (d.bday || []).forEach(b => rows.push(`【${b.age}歳】${b.label}　${amtText(b.amounts)}`));
-  (d.tsuki || []).forEach(ts => rows.push(`【${ts.from}〜${ts.to - 1}歳】${ts.label}　月${ts.monthly.toLocaleString()}円`));
-  return rows.join('\n') || '独自の現金・商品券給付はなし';
-}
 // 金額・ポイント表現を強調（esc済みテキストに適用すること）
 function mnyHtml(t){ return t.replace(/([0-9０-９][0-9０-９,，]*(?:\.[0-9]+)?万?円(?:相当)?(?:分)?|[0-9][0-9,]*万?ポイント)/g, '<b class="m">$1</b>'); }
 // カード詳細用: 独自給付を「時期チップ＋名称＋金額」の行に整形
@@ -1125,9 +1120,9 @@ function openCompare(){
     `<tr class="${rowClass || ''}"><td>${label}</td>${vals.map((v, i) => `<td><span class="yen">${manS(v)}</span>${extra ? `<span class="sub2">${extra(i)}</span>` : ''}</td>`).join('')}</tr>`;
   const minRow = (label, nums, texts) => `<tr><td>${label}</td>${texts.map(t => `<td>${t}</td>`).join('')}</tr>`;
   const tokyoRows = anyTokyo ? `
-    ${row('認証保育所などの補助', d => d.pref === '東京都' ? esc(d.ninsho || '—') : '—（都内のみ収録）', 'longtext')}
-    ${row('私立幼稚園の保護者補助', d => d.pref === '東京都' ? esc(d.yochien || '—') : '—（都内のみ収録）', 'longtext')}
-    ${row('ベビーシッター利用支援（都事業）', d => d.pref === '東京都' ? esc(d.bs || '未実施') : '—（都事業）', 'longtext')}` : '';
+    ${row('認証保育所などの補助', d => d.pref === '東京都' ? mnyHtml(esc(d.ninsho || '—')) : '—（都内のみ収録）', 'longtext')}
+    ${row('私立幼稚園の保護者補助', d => d.pref === '東京都' ? mnyHtml(esc(d.yochien || '—')) : '—（都内のみ収録）', 'longtext')}
+    ${row('ベビーシッター利用支援（都事業）', d => d.pref === '東京都' ? (d.bs ? bsHtml(d) : '未実施') : '—（都事業）', 'longtext')}` : '';
   document.getElementById('cmpBody').innerHTML = `
     <div class="cmphint">👉 表は横にスクロールできます（項目名は固定のまま）</div>
     <table class="cmp">
@@ -1139,12 +1134,12 @@ function openCompare(){
         ${moneyRow('小中高（6〜18歳）', ss.map(s => s.school))}
         ${moneyRow('合計', ss.map(s => s.total), i => `うち自治体独自 ${man(ss[i].muni)}`, 'rtotal')}
         ${section('制度の違い')}
-        ${row('都県の制度', d => `【${esc(d.pref)}】\n` + esc(PREFS[d.pref].prefItems.map(i => i[0]).join('\n')), 'longtext')}
+        ${row('都県の制度', d => `【${esc(d.pref)}】\n` + mnyHtml(esc(PREFS[d.pref].prefItems.map(i => i[0]).join('\n'))), 'longtext')}
         ${row('そのほかの制度', d => { const ts = d.tags.filter(t => TAG_LABELS[t]); return ts.length ? ts.map(t => TAG_LABELS[t]).join('\n') : '—'; })}
         ${row('子ども医療費助成', d => esc(d.iryo).replace(/。(?=.)/g, '。\n'), 'longtext')}
         ${row('学校給食費', d => esc(d.kyushoku).replace(/／/g, '\n'), 'longtext')}
-        ${row('独自給付（制度一覧）', d => esc(benefitsText(d)), 'longtext')}
-        ${row('そのほか注目の支援', d => d.sonota ? esc(listify(d.sonota)) : '—', 'longtext')}
+        ${row('独自給付（制度一覧）', d => benefitsHtml(d), 'longtext')}
+        ${row('そのほか注目の支援', d => sonotaHtml(d.sonota), 'longtext')}
         ${tokyoRows}
         ${section('保育・預け先')}
         ${minRow('保育所待機児童', ds.map(d => d.hoiku), ds.map(d => taikiText(d.hoiku)))}
