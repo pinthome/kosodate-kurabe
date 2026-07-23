@@ -500,7 +500,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
       <p>【制定日】2026年7月17日（最終更新: 2026年7月22日）</p></div>
   </details>
   <h3 class="foot-title">作成者について</h3>
-  <p class="onb-credit" style="margin-top:12px">お問い合わせ・制度情報の誤りのご指摘は、下記InstagramのDMにてお願いいたします。<br>使ってみたご感想もいただけるととっても励みになります🙇‍♀️</p>
+  <p class="onb-credit" style="margin-top:12px">制度情報の誤り・変更にお気づきの際は、<a class="report-link" href="https://docs.google.com/forms/d/e/1FAIpQLSekQxYwqGpUsdz8OGYh4vHTAx_Pc6klSFREnWC3DQ6q-EuoUg/viewform" target="_blank" rel="noopener">報告フォーム（匿名OK・1分）</a>からお知らせください。<br>お問い合わせやご感想は、下記InstagramのDMにていただけるととっても励みになります🙇‍♀️</p>
   <section class="pfcard" aria-label="作成者について">
     <img class="pf-photo" src="img/profile.jpg" alt="作成者 ゆかの写真" width="96" height="96" loading="lazy">
     <p class="pf-name">ゆか</p>
@@ -1247,6 +1247,7 @@ document.addEventListener('click', e => {
   if(a.classList.contains('sicon')) track('share', { method: href.includes('line.me') ? 'line' : 'x', content_type: 'comparison', item_id: state.compare.join(',') });
   else if(a.classList.contains('pf-ig') || a.classList.contains('iglink')) track('click_cta', { cta: 'instagram', location: a.classList.contains('pf-ig') ? 'profile' : 'onboarding' });
   else if(a.classList.contains('pf-line')) track('click_cta', { cta: 'line', location: 'profile' });
+  else if(a.classList.contains('report-link')) track('click_cta', { cta: 'report_form', location: 'footer' });
   else if(a.classList.contains('official') || a.classList.contains('ext')) track('click_official', { muni_name: a.closest('.card')?.dataset.name || '' });
 });
 
