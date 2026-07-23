@@ -8,3 +8,7 @@ node_modules/
 .DS_Store
 # ビルド生成物（ソースは app/index.html）
 public/index.html
+# 自治体別ページ・sitemap（scripts/build-pages.mjs が生成）
+public/*/
+!public/img/
+public/sitemap.xml

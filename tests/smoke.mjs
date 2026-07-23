@@ -66,6 +66,22 @@ assert(html.includes('ァ-ヶ') && html.includes('yomi'), 'かな検索（カタ
 assert(/#BE4E4A/i.test(html) && !/#EE8A86/i.test(html), '合計タイルがWCAG AA準拠の濃いコーラル（白文字4.5:1以上）');
 assert(html.includes('docs.google.com/forms/d/e/1FAIpQLSczD3gyWyhpAA6B8xoomtCn5SQ406knoqNQ_vF8qM8zmvf3Cw/viewform'), '誤り報告フォームへのリンクがある');
 assert(html.includes('report_form'), '報告フォームクリックのGA計測がある');
+
+// ---- 自治体別ページ（scripts/build-pages.mjs） ----
+{
+  const { readdirSync, existsSync } = await import('node:fs');
+  const dirs = readdirSync(new URL('../public/', import.meta.url), { withFileTypes: true })
+    .filter(d => d.isDirectory() && d.name !== 'img' && existsSync(new URL(`../public/${d.name}/index.html`, import.meta.url)));
+  assert(dirs.length === 212, `自治体別ページが212枚ある（実際: ${dirs.length}）`);
+  const setagayaPage = readFileSync(new URL('../public/setagaya-ku/index.html', import.meta.url), 'utf8');
+  assert(setagayaPage.includes('世田谷区の子育て支援制度まとめ'), '世田谷区ページにタイトルがある');
+  assert(setagayaPage.includes('<link rel="canonical" href="https://kosodate.pint-home.com/setagaya-ku/">'), '世田谷区ページにcanonicalがある');
+  assert(setagayaPage.includes('バースデーサポート'), '世田谷区ページに独自給付がある');
+  const sitemap = readFileSync(new URL('../public/sitemap.xml', import.meta.url), 'utf8');
+  assert((sitemap.match(/<loc>/g) || []).length === 213, `sitemapにトップ＋212ページのURLがある（実際: ${(sitemap.match(/<loc>/g) || []).length}）`);
+  assert(sitemap.includes('https://kosodate.pint-home.com/setagaya-ku/'), 'sitemapに世田谷区ページがある');
+  assert(built.includes('href="/setagaya-ku/"'), 'トップページのフッターに自治体ページへのリンクが注入されている');
+}
 assert(!/^const PREFS = \{/m.test(html), 'ソースにPREFSデータが埋め込まれていない');
 assert(!/script-src/.test(headers), 'CSPにscript-srcがない（本番事故防止・README運用メモ参照）');
 assert(/object-src 'none'/.test(headers), "CSPにobject-src 'none'がある");
