@@ -38,7 +38,8 @@
   --c-kuni:#7E90A3; --c-to:#14264E; --c-shi:#C95B57;
   --grad-accent:linear-gradient(135deg,#2A4173 0%,#14264E 100%);
     --joy:#E67874; --joy-soft:#FBEBEA; --joy-deep:#C4534F;
-  --grad-joy:linear-gradient(135deg,#EE8A86 0%,#D6615D 100%);
+  /* 白文字とのコントラストWCAG AA(4.5:1)を満たす濃さにしている（#BE4E4A=4.8:1, #A23F3C=6.3:1）。明るくしないこと */
+  --grad-joy:linear-gradient(135deg,#BE4E4A 0%,#A23F3C 100%);
   --sh-sm:0 2px 6px rgba(24,60,100,.05), 0 8px 24px rgba(24,60,100,.06);
   --sh-md:0 4px 16px rgba(24,60,100,.07), 0 18px 44px rgba(24,60,100,.08);
   --sh-accent:0 6px 18px rgba(20,38,78,.25);
@@ -247,7 +248,7 @@ footer.note .fn .num{flex:none; color:var(--accent); font-weight:700; font-varia
 .st span{display:block; font-size:10px; color:var(--muted); letter-spacing:.01em}
 .st b{display:block; font-size:13.5px; font-variant-numeric:tabular-nums; font-weight:700; margin-top:3px; white-space:nowrap; letter-spacing:-.03em}
 .st.total{background:var(--grad-joy); box-shadow:var(--sh-joy); position:relative; overflow:visible}
-.st.total span{color:rgba(255,255,255,.88)}
+.st.total span{color:rgba(255,255,255,.95)}
 .st.total b{color:#fff; font-size:14.5px}
 .st.total.joypop{animation:joyPop .5s cubic-bezier(.34,1.56,.64,1)}
 .cf{position:absolute; top:0; left:50%; width:6px; height:9px; border-radius:2px; pointer-events:none; opacity:0; animation:cfFall .9s ease-out forwards}
@@ -445,7 +446,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
 <section class="panel" aria-label="自治体をえらんで比較">
   <h2><span class="step">2</span>くらべる自治体をえらぶ</h2>
   <div class="hint" style="margin:-8px 0 12px">検索するか一覧からタップで追加（最大3つ・県をまたいでOK）。</div>
-  <input type="search" id="muniSearch" class="searchbox" placeholder="🔍 自治体名で検索（例: 世田谷、流山、大宮）">
+  <input type="search" id="muniSearch" class="searchbox" placeholder="🔍 自治体名で検索（例: 世田谷、せたがや、流山）">
   <div id="browseList" class="browselist"></div>
   <div class="picked" id="cmpPicked"></div>
 </section>
@@ -562,6 +563,9 @@ const ALL_MUNIS = Object.values(PREFS).flatMap(c => c.munis);
 // ---- 計測（GA4）。gtag未読込（localhost・ブロック時）は何もしない ----
 function track(name, params){ if(typeof window.gtag === 'function') window.gtag('event', name, params || {}); }
 function findMuni(name){ return ALL_MUNIS.find(d => d.name === name); }
+// 検索用: カタカナ→ひらがな・空白除去（「セタガヤ」「せたがや」どちらでもヒットさせる）
+function toHira(s){ return s.replace(/[ァ-ヶ]/g, c => String.fromCharCode(c.charCodeAt(0) - 0x60)).replace(/[\s　]/g, ''); }
+function muniMatch(d, q){ const kq = toHira(q); return d.name.includes(q) || (d.yomi && kq && d.yomi.includes(kq)); }
 function currentMunis(){ return state.pref === ALL ? ALL_MUNIS : PREFS[state.pref].munis; }
 function prefTagOf(p){ return p === '東京都' ? '都' : '県'; }
 function confOf(d){ return PREFS[d.pref]; }
@@ -732,7 +736,7 @@ function renderBrowse(){
   const el = document.getElementById('browseList');
   if(!el) return;
   const q = state.q.trim();
-  const src = q ? ALL_MUNIS.filter(d => d.name.includes(q)) : currentMunis();
+  const src = q ? ALL_MUNIS.filter(d => muniMatch(d, q)) : currentMunis();
   let html = '', cur = '';
   src.forEach(d => {
     if(d.pref !== cur){ cur = d.pref; html += `<div class="mgroup">${esc(cur)}</div>`; }

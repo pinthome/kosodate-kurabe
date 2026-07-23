@@ -30,6 +30,12 @@ assert(html.includes('</body>') && html.includes('</html>'), 'body/htmlが閉じ
   }
   const all = Object.values(prefs).flatMap(c => c.munis);
 
+  // よみがな（かな検索用）が全自治体でひらがな設定済み
+  const badYomi = all.filter(d => !/^[ぁ-ゖー]+$/.test(d.yomi || ''));
+  assert(badYomi.length === 0, `yomiが全自治体でひらがな${badYomi.length ? '（不正: ' + badYomi.map(d => d.name).join(',') + '）' : ''}`);
+  const setagaya = all.find(d => d.name === '世田谷区');
+  assert(setagaya && setagaya.yomi === 'せたがやく', '世田谷区のyomiがせたがやく');
+
   // 待機児童数（保育所）が全自治体で設定済み
   const noHoiku = all.filter(d => d.hoiku == null);
   assert(noHoiku.length === 0, `保育所待機児童数が全自治体で非null${noHoiku.length ? '（欠落: ' + noHoiku.map(d => d.name).join(',') + '）' : ''}`);
@@ -56,6 +62,8 @@ assert(html.includes('</body>') && html.includes('</html>'), 'body/htmlが閉じ
 const scripts = [...html.matchAll(/<script type="module">([\s\S]*?)<\/script>/g)];
 assert(scripts.length === 1, 'インラインスクリプト（module）が1つだけ');
 assert(html.includes("fetch('/api/prefs')"), 'PREFSを/api/prefsから取得している');
+assert(html.includes('ァ-ヶ') && html.includes('yomi'), 'かな検索（カタカナ正規化＋yomi照合）が組み込まれている');
+assert(/#BE4E4A/i.test(html) && !/#EE8A86/i.test(html), '合計タイルがWCAG AA準拠の濃いコーラル（白文字4.5:1以上）');
 assert(!/^const PREFS = \{/m.test(html), 'ソースにPREFSデータが埋め込まれていない');
 assert(!/script-src/.test(headers), 'CSPにscript-srcがない（本番事故防止・README運用メモ参照）');
 assert(/object-src 'none'/.test(headers), "CSPにobject-src 'none'がある");
